@@ -1,3 +1,19 @@
 {
-  "theme": "Soda Dark.sublime-theme"
+  "color_scheme": "Packages/Color Scheme - Default/Solarized (Light).tmTheme",
+  "folder_exclude_patterns":
+  [
+    ".bundle",
+    ".idea",
+    ".kde",
+    ".git"
+  ],
+  "font_size": 15.0,
+  "ignored_packages":
+  [
+    "Vintage"
+  ],
+  "save_on_focus_lost": true,
+  "tab_size": 2,
+  "translate_tabs_to_spaces": true,
+  "trim_trailing_white_space_on_save": true
 }
