@@ -1,83 +1,126 @@
-autoload colors && colors
-# cheers, @ehrenmurdick
-# http://github.com/ehrenmurdick/config/blob/master/zsh/prompt.zsh
+#!/bin/zsh
+#
+# vi-mode colour changing
+#   http://www.zsh.org/mla/users/2006/msg01196.html
 
-git_branch() {
-  echo $(/usr/bin/git symbolic-ref HEAD 2>/dev/null | awk -F/ {'print $NF'})
+setopt prompt_subst
+autoload colors
+colors
+
+rst="%{%b%s%u$reset_color%}"
+bgc="%{%(?.$rst.%S)%}"
+
+function lprompt {
+    local col1 col2 ch1 ch2
+    col1="%{%b$fg[$2]%}"
+    col2="%{$4$fg[$3]%}"
+    ch1=$col1${1[1]}
+    ch2=$col1${1[2]}
+
+    local git_b git_s col_b col_s
+    git_b='$(get_git_prompt_info '%b')'
+    git_s='$(get_git_prompt_info '%s')'
+    if [ -n "$TALIA_SHELL" ]; then talia_s=" [talia] " ; fi
+    if [ -n "$SSH_TTY" ]; then ssh_s="*" ; fi
+    col_s="%{$fg[red]%}"
+
+    PROMPT="\
+$col2$ssh_s \
+$bgc$ch1\
+$bgc$col2%B%1~%b\
+$col1 %n\
+$col_s$talia_s\
+$ch2$rst\
+$col2\$$rst "
 }
 
-git_dirty() {
-  st=$(/usr/bin/git status 2>/dev/null | tail -n 1)
-  if [[ $st == "" ]]
-  then
-    echo ""
-  else
-    if [[ $st == "nothing to commit (working directory clean)" ]]
-    then
-      echo "on %{$fg_bold[green]%}$(git_prompt_info)%{$reset_color%}"
-    else
-      echo "on %{$fg_bold[red]%}$(git_prompt_info)%{$reset_color%}"
+function _rprompt_dir {
+    local col_b col_s
+    git_p=${$(get_git_prompt_info '%p')%% }
+    col_p="%{$fg[yellow]%}"
+
+    local short
+    short="${PWD/$HOME/~}"
+
+    if test -z "$git_p" ; then
+            echo -n "$short"
+            return
     fi
-  fi
+
+    local lead rest
+    lead=$git_p
+    rest=${${short#$lead}#/}
+
+    echo -n "$lead$col_p/$rest"
 }
 
-git_prompt_info () {
- ref=$(/usr/bin/git symbolic-ref HEAD 2>/dev/null) || return
-# echo "(%{\e[0;33m%}${ref#refs/heads/}%{\e[0m%})"
- echo "${ref#refs/heads/}"
+function rprompt {
+    local col1 col2 ch1 ch2
+    col1="%{$fg[$2]%}"
+    col2="%{$4$fg[$3]%}"
+    ch1=$col1${1[1]}
+    ch2=$col1${1[2]}
+    col_git="%{$fg[green]%}"
+    col_rvm="%{$fg[blue]%}"
+    git_b='$(get_git_prompt_info '%b' )'
+    rvm_b='$(get_rvm_prompt_info '%b' )'
+
+    local _dir='$(_rprompt_dir)'
+    
+    if [[ ( "$TERM" = "screen" ) && ( -n "$STY" ) ]]; then screen_s="screen:$STY[(ws:.:)-1] " ; fi
+
+    RPROMPT="\
+$rst$ch1\
+$col1$screen_s\
+$col_git$git_b\
+$col_rvm$rvm_b\
+$col2%n@%m\
+$col1:\
+$col2%B$_dir%b\
+$ch2$rst"
 }
 
-unpushed () {
-  /usr/bin/git cherry -v @{upstream} 2>/dev/null
-}
+if [ $UID -eq 0 ]; then
+    lprompt '[]' red red
+    rprompt '[]' black black
+elif [ "$TERM" = "screen" ]; then
+    lprompt '' green blue
+    rprompt '[]' blue black
+elif [ -n "$SSH_TTY" ]; then
+    lprompt '' cyan blue
+    rprompt '[]' black black
+else
+    lprompt '' blue black
+    rprompt '[]' black black
+fi
 
-need_push () {
-  if [[ $(unpushed) == "" ]]
-  then
-    echo " "
-  else
-    echo " with %{$fg_bold[magenta]%}unpushed%{$reset_color%} "
-  fi
-}
 
-rb_prompt(){
-  if $(which rbenv &> /dev/null)
-  then
-	  echo "%{$fg_bold[yellow]%}$(rbenv version | awk '{print $1}')%{$reset_color%}"
-	else
-	  echo ""
-  fi
-}
+unset rst bgc
 
-# This keeps the number of todos always available the right hand side of my
-# command line. I filter it to only count those tagged as "+next", so it's more
-# of a motivation to clear out the list.
-todo(){
-  if $(which todo.sh &> /dev/null)
-  then
-    num=$(echo $(todo.sh ls +next | wc -l))
-    let todos=num-2
-    if [ $todos != 0 ]
-    then
-      echo "$todos"
-    else
-      echo ""
-    fi
-  else
-    echo ""
-  fi
-}
+# ------------------------------
+# http://dotfiles.org/~frogb/.zshrc
 
-directory_name(){
-  echo "%{$fg_bold[cyan]%}%1/%\/%{$reset_color%}"
-}
+case $TERM in
+    xterm* | rxvt* | urxvt*)
+        precmd() { 
+                print -Pn "\e]0;%n@%m: %~\a"
+        }
+        preexec() {
+                #print -Pn "\e]0;$1\a"
+                print -Pn "\e]0;%n@%m: %~  $1\a"
+        }
+        ;;
+    screen*)
+        precmd() { 
+                print -nR $'\033k'"zsh"$'\033'\\\
 
-export PROMPT=$'\n$(rb_prompt) in $(directory_name) $(git_dirty)$(need_push)\n› '
-set_prompt () {
-  export RPROMPT="%{$fg_bold[cyan]%}$(todo)%{$reset_color%}"
-}
+                print -nR $'\033]0;'"zsh"$'\a'
+        }
+        preexec() {
+                print -nR $'\033k'"$1"$'\033'\\\
 
-precmd() {
-  title "zsh" "%m" "%55<...<%~"
-  set_prompt
-}
+                print -nR $'\033]0;'"$1"$'\a'
+        }
+        ;;
+esac
+
