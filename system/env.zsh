@@ -1,1 +1,1 @@
-export EDITOR='subl'
+# Nuffink
