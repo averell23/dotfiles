@@ -8,6 +8,12 @@ task :install do
   overwrite_all = false
   backup_all = false
 
+  if system("gcc -Wall realpath.c -o realpath -framework CoreServices") && system('sudo cp realpath /usr/local/bin')
+    puts "Installed realpath tool"
+  else
+    puts "Could not build the realpath tool"
+  end
+
   linkables.each do |linkable|
     overwrite = false
     backup = false
