@@ -1,33 +1,38 @@
-# Sample gitconfig
-#
-# You probably want to change the [user] section here since you are not me.
-
-[hub]
-        protocol = https
 [user]
-        name = Zach Holman
-        email = zach@zachholman.com
-[credential]
-        helper = osxkeychain
-[alias]
-        co = checkout
-        promote = !$ZSH/bin/git-promote
-        wtf     = !$ZSH/bin/git-wtf
-        rank-contributers = !$ZSH/bin/git-rank-contributers
-        count   = !git shortlog -sn
-[color]
-        diff = auto
-        status = auto
-        branch = auto
-        ui = true
+  name = Daniel Hahn
+  email = dha@betterplace.org
+[merge]
+  tool = opendiff
 [core]
-        excludesfile = ~/.gitignore
-        editor = vim
-[apply]
-        whitespace = nowarn
-[mergetool]
-        keepBackup = false
-[difftool]
-        prompt = false
-[help]
-        autocorrect = 1
+  excludesfile = /Users/daniel/.gitexcludes
+  # editor = mate -w
+[color]
+  ui = auto
+[color "branch"]
+  current = blue reverse
+  local = blue
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  cl = clone
+        co = checkout
+  lg = log
+        killorig = clean -f "*.orig *.BACKUP.* *.BASE.* *.LOCAL.* *.REMOTE.*"
+  pp = !"git pull $1 $2 && git push $1 $2"
+        ppp = !"git pull $1 $2 && git push $1 $2 ; localeapp pull"
+
+[github]
+  user = averell23
+  token = c663eeb827332740f53c12896a44decd
