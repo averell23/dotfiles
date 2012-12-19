@@ -1,3 +1,6 @@
+Host hetzner
+HostName 88.198.202.119
+
 Host dev01
 User betterplace_deploy
 ForwardAgent yes
@@ -23,11 +26,6 @@ ForwardAgent yes
 Host vagrant
 HostName bam01
 User vagrant
-
-Host cheftest
-User root
-HostName hahler.de
-Port 13022
 
 Host apitest
 HostName apitest.betterplace.org
