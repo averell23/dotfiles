@@ -14,6 +14,12 @@ then
   source ~/.localrc
 fi
 
+# use local profile on mac if it exists
+if [[ -a ~/.profile ]]
+then
+  source ~/.profile
+fi
+
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -U compinit
 compinit

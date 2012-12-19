@@ -6,18 +6,14 @@ Host web08
 User betterplace
 ForwardAgent yes
 
-Host web01old
-User betterplace_deploy
-ForwardAgent yes
-
 Host web01
 User betterplace_deploy
 ServerAliveInterval 60
 ForwardAgent yes
 
 Host web06 apitest
-HostName apitest.betterplace.org
-User betterplace_deploy
+HostName web06.betterplace.org
+User betterplace
 ForwardAgent yes
 
 Host bam01
@@ -61,6 +57,11 @@ ForwardAgent yes
 
 Host web05
 HostName web05.betterplace.org
+User betterplace
+ForwardAgent yes
+
+Host web08
+HostName web08.betterplace.org
 User betterplace
 ForwardAgent yes
 
