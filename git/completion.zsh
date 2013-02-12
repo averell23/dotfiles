@@ -3,7 +3,7 @@
 # tosses it, at least).
 completion=/usr/local/etc/bash_completion.d/git-completion.bash
 
-if test -f $completion
-then
-  source $completion
-fi
+#if test -f $completion
+#then
+#  source $completion
+#fi

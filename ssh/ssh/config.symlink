@@ -65,7 +65,7 @@ ForwardAgent yes
 
 Host web10
 HostName 46.30.81.196
-User norway_staging
+User betterplace 
 ForwardAgent yes
 
 Host web12
