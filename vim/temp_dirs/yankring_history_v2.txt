@@ -1,0 +1,12 @@
+endif,V
+ ,v
+c,v
+,V
+colorscheme peaksea,V
+else,V
+if has("gui_running"),V
+status: "DONATION_COMPLETE",      receiver_type: @receiver.final_receiver.class.name.underscore,      receiver_id: @receiver.final_receiver.to_param,      publish: publish ? '1' : '0',      newsletter: newsletter ? '1' : '0',      donation_token: @donation.token,      amount: @donation.amount.to_f.round,      donation_client_reference: @donation.client_reference,      user_id: client_user.try(:id),v
+kkkkkkkkkkkkkkkkkkkk,2
+srrpndad,1
+load_donation    publish    = (params[:publish].to_i == 1)    newsletter = (params[:newsletter].to_i == 1)    # If the user wants to publish his/her data, we will create a    # ClientUser so that it will show up in the API as a supporter, too    client_user = ClientUser.create_for_donation(@donation) if (publish || newsletter)    @donation.update_attributes!(anonymous: true) unless publish,v
+sh ~/.vim_runtime/install_awesome_vimrc.sh,v
