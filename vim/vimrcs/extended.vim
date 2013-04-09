@@ -8,8 +8,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => GUI related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set background=dark
-colorscheme ir_black
+" set background=dark
+colorscheme mayansmoke 
 
 " Set font according to system
 if has("mac") || has("macunix")
@@ -23,16 +23,16 @@ elseif has("linux")
 endif
 
 " Open MacVim in fullscreen mode
-if has("gui_macvim")
-    set fuoptions=maxvert,maxhorz
-    au GUIEnter * set fullscreen
-endif
+"if has("gui_macvim")
+"    set fuoptions=maxvert,maxhorz
+"    au GUIEnter * set fullscreen
+"endif
 
 " Disable scrollbars (real hackers don't use scrollbars for navigation!)
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
+"set guioptions-=r
+"set guioptions-=R
+"set guioptions-=l
+"set guioptions-=L
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
