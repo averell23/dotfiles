@@ -1,2 +1,6 @@
 temp_dirs/
 !temp_dirs/.gitkeep
+vundle/
+!vundle/.gitkeep
+default_plugins/
+!defauls_plugins/.gitkeep
