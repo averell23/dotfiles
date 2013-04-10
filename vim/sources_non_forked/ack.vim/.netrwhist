@@ -1,4 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =4
 let g:netrw_dirhist_1='/Users/daniel/.dotfiles'
 let g:netrw_dirhist_2='/Developer/bettermobile'
+let g:netrw_dirhist_3='/Developer/provisioning/better-cooking/dashboard-pi-cookbook'
+let g:netrw_dirhist_4='/Users/dha/.dotfiles'
