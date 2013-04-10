@@ -213,6 +213,9 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+" Crtl-tab between tabs
+map <C-Tab> :tabnext<cr>
+
 " Close the current buffer
 map <leader>bd :Bclose<cr>
 

@@ -44,7 +44,11 @@ endif
 """"""""""""""""""""""""""""""
 let g:ctrlp_working_path_mode = 0
 
-let g:ctrlp_map = '<c-f>'
+if has("mac") || has("macunix")
+  let g:ctrlp_map = '<D-t>'
+else
+  let g:ctrlp_map = '<A-t>'
+endif
 map <c-b> :CtrlPBuffer<cr>
 
 let g:ctrlp_max_height = 20
@@ -85,3 +89,6 @@ map <leader>nf :NERDTreeFind<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 vmap Si S(i_<esc>f)
 au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
+
+" Ack
+map <D-F> :Ack 
