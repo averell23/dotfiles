@@ -102,13 +102,14 @@ map <leader>nf :NERDTreeFind<cr>
 Bundle 'ack.vim'
 
 " Ack
-map <D-F> :Ack 
+noremap <D-F> :Ack 
       
 Bundle 'amix/open_file_under_cursor.vim'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-surround'
 " Bundle 'AutoComplPop'
 Bundle 'ervandew/supertab'
+Bundle 'tpope/vim-fugitive'
 
 " Color schemes
 Bundle 'mayansmoke'

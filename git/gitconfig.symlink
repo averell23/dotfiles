@@ -5,7 +5,7 @@
   tool = opendiff
 [core]
   excludesfile = /Users/daniel/.gitexcludes
-  # editor = mate -w
+  editor = vim
 [color]
   ui = auto
 [color "branch"]

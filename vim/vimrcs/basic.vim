@@ -223,6 +223,10 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,1000 bd!<cr>
 
 " Useful mappings for managing tabs
+if has("gui_running")
+  noremap <C-Tab> :tabnext<cr>
+endif
+map <leader>tt :tabnext<cr>
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
