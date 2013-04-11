@@ -58,7 +58,7 @@ Bundle 'ctrlp.vim'
 """"""""""""""""""""""""""""""
 let g:ctrlp_working_path_mode = 0
 
-if has("mac") || has("macunix")
+if has("gui_macvim")
   let g:ctrlp_map = '<D-t>'
 else
   let g:ctrlp_map = '<A-t>'
@@ -109,7 +109,14 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-surround'
 " Bundle 'AutoComplPop'
 Bundle 'ervandew/supertab'
+
 Bundle 'tpope/vim-fugitive'
+map <leader>gst :Gstatus<cr>
+map <leader>gci :Gcommit -m 
+map <leader>gca :Gcommit -ma 
+map <leader>gbl :Gblame<cr>
+map <leader>gg :Git 
+map <leader>gpp :Git pp<cr>
 
 " Color schemes
 Bundle 'mayansmoke'
