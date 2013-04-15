@@ -32,23 +32,23 @@ au FileType javascript imap <c-a> alert();<esc>hi
 au FileType javascript inoremap <buffer> $r return 
 au FileType javascript inoremap <buffer> $f //--- PH ----------------------------------------------<esc>FP2xi
 
-function! JavaScriptFold() 
-    setl foldmethod=syntax
-    setl foldlevelstart=20
-    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-    function! FoldText()
-        return substitute(getline(v:foldstart), '{.*', '{...}', '')
-    endfunction
-    setl foldtext=FoldText()
-endfunction
-
+" function! JavaScriptFold() 
+"     setl foldmethod=syntax
+"     setl foldlevelstart=20
+"     syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+" 
+"     function! FoldText()
+"         return substitute(getline(v:foldstart), '{.*', '{...}', '')
+"     endfunction
+"     setl foldtext=FoldText()
+" endfunction
+" au FileType javascript call JavaScriptFold()
 
 """"""""""""""""""""""""""""""
 " => CoffeeScript section
 """""""""""""""""""""""""""""""
-function! CoffeeScriptFold()
-    setl foldmethod=indent
-    setl foldlevelstart=99
-endfunction
-au FileType coffee call CoffeeScriptFold()
+" function! CoffeeScriptFold()
+"     setl foldmethod=indent
+"     setl foldlevelstart=99
+" endfunction
+" au FileType coffee call CoffeeScriptFold()

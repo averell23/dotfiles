@@ -291,8 +291,20 @@ func! DeleteTrailingWS()
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.py     :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.rb     :call DeleteTrailingWS()
+autocmd BufWrite *.haml   :call DeleteTrailingWS()
+autocmd BufWrite *.sass   :call DeleteTrailingWS()
+autocmd BufWrite *.js     :call DeleteTrailingWS()
+autocmd BufWrite *.slim   :call DeleteTrailingWS()
+autocmd BufWrite *.scss   :call DeleteTrailingWS()
+autocmd BufWrite *.erb    :call DeleteTrailingWS()
+autocmd BufWrite *.html   :call DeleteTrailingWS()
+autocmd BufWrite *.xml    :call DeleteTrailingWS()
+autocmd BufWrite *.json   :call DeleteTrailingWS()
+autocmd BufWrite *.yml    :call DeleteTrailingWS()
+autocmd BufWrite *.yaml   :call DeleteTrailingWS()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
