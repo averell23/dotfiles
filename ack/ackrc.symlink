@@ -1,0 +1,12 @@
+--type-add=haml=.haml
+--type-add=slim=.slim
+--type-add=css=.sass
+--type-add=cucumber=.feature
+--type-add=textile=.textile
+--type-set=xcode=.pbxproj,.pbxuser,.perspectivev3
+--type-set=nib=.xib
+--type-set=tmstuff=.tmproj,.tm_build_errors
+--type-set=xmlbuilder=.builder
+--nonib
+--notmstuff
+--noxcode
