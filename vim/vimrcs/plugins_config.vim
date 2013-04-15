@@ -127,6 +127,8 @@ Bundle 'groenewege/vim-less'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-rails'
 Bundle 'vim-ruby/vim-ruby'
+Bundle 'tpope/vim-haml'
+Bundle 'slim-template/vim-slim'
 
 " Reenable the filtype
 filetype on           " Enable filetype detection
