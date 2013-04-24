@@ -183,6 +183,10 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
+" Make < and > ident in visual mode w/o losing the selection
+vnoremap < <gv
+vnoremap > >gv
+
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
