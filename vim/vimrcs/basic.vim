@@ -309,7 +309,7 @@ autocmd BufWrite *.xml    :call DeleteTrailingWS()
 autocmd BufWrite *.json   :call DeleteTrailingWS()
 autocmd BufWrite *.yml    :call DeleteTrailingWS()
 autocmd BufWrite *.yaml   :call DeleteTrailingWS()
-
+autocmd FocusLost * silent! wa
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying

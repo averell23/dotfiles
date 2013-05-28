@@ -1,8 +1,9 @@
 --type-add=haml=.haml
 --type-add=slim=.slim
---type-add=css=.sass
+--type-add=css=.sass,.scss
 --type-add=cucumber=.feature
 --type-add=textile=.textile
+--type-add=json=.json
 --type-set=xcode=.pbxproj,.pbxuser,.perspectivev3
 --type-set=nib=.xib
 --type-set=tmstuff=.tmproj,.tm_build_errors
@@ -10,3 +11,6 @@
 --nonib
 --notmstuff
 --noxcode
+--ignore-dir=.kitchen
+--ignore-dir=tmp
+--ignore-dir=.chef

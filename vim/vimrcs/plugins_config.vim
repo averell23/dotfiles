@@ -90,12 +90,14 @@ let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
 " set grepprg=/bin/grep\ -nH
 
 
-Bundle 'scrooloose/nerdtree'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Nerd Tree
+" => Nerd Tree and Nerd tree tabs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>nn :NERDTreeToggle<cr>
+Bundle 'scrooloose/nerdtree'
+Bundle 'jistr/vim-nerdtree-tabs'
+
+map <leader>nn :NERDTreeTabsToggle<cr>
 map <leader>nb :NERDTreeFromBookmark 
 map <leader>nf :NERDTreeFind<cr>
 

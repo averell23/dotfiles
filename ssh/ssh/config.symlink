@@ -19,9 +19,13 @@ HostName web06.betterplace.org
 User betterplace
 ForwardAgent yes
 
-Host ampel
+Host pi
 HostName 192.168.1.7
 User pi
+
+Host igel
+HostName 192.168.1.8
+User betterplace
 
 Host bam01
 User jenkins
