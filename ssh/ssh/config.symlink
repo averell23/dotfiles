@@ -1,15 +1,18 @@
 Host hetzner
 HostName 88.198.202.119
 
-Host dev01
-User betterplace_deploy
-ForwardAgent yes
-
 Host web08
 User betterplace
 ForwardAgent yes
 
+Host web02
+HostName web02.betterplace.org
+User betterplace_deploy
+ServerAliveInterval 60
+ForwardAgent yes
+
 Host web01
+HostName web01.betterplace.org
 User betterplace_deploy
 ServerAliveInterval 60
 ForwardAgent yes
