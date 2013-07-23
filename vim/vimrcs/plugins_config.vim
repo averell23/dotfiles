@@ -123,6 +123,9 @@ map <leader>gpp :Git pp<cr>
 " Color schemes
 Bundle 'mayansmoke'
 
+" Global Search&Replace
+Bundle 'greplace.vim'
+
 " File type plugins
 Bundle 'vim-coffee-script'
 Bundle 'groenewege/vim-less'
