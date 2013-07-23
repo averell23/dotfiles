@@ -71,6 +71,9 @@ set so=7
 " Turn on the WiLd menu
 set wildmenu
 
+" line numbers
+set number
+
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
@@ -216,6 +219,11 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+" Use Ctrl-arrow keys to move around. 
+map <D-M-Down> <C-W>j
+map <D-M-Up> <C-W>k
+map <D-M-Left> <C-W>h
+map <D-M-Right> <C-W>l
 
 " Crtl-tab between tabs
 map <C-Tab> :tabnext<cr>
