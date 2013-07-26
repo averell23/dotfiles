@@ -7,11 +7,22 @@ task :install do
   skip_all = false
   overwrite_all = false
   backup_all = false
+  is_darwin = `uname -s`.strip == 'Darwin' 
 
-  if system("gcc -Wall realpath.c -o realpath -framework CoreServices") && system('sudo cp realpath /usr/local/bin')
-    puts "Installed realpath tool"
-  else
-    puts "Could not build the realpath tool"
+  unless is_darwin && system('which realpath > /dev/null') # check realpath install
+    puts "Installing realpath tool"
+    if system("gcc -Wall realpath.c -o realpath -framework CoreServices") && system('sudo cp realpath /usr/local/bin')
+      puts "Installed realpath tool"
+    else
+      puts "Could not build the realpath tool"
+    end
+  end
+
+  # Move the zshenv, so that vim will correctly find rvm ruby... d'oh
+  # see https://github.com/tpope/vim-rvm
+  if is_darwin && File.exists?('/etc/zshenv')
+    puts "Moving zshrc on this Mac"
+    system 'sudo mv /etc/zshenv /etc/zshrc'
   end
 
   linkables.each do |linkable|
@@ -55,6 +66,11 @@ task :uninstall do
     # Replace any backups made during installation
     if File.exists?("#{ENV["HOME"]}/.#{file}.backup")
       `mv "$HOME/.#{file}.backup" "$HOME/.#{file}"` 
+    end
+  
+    # Move the zshenv back, see above
+    if `uname -s`.strip == 'Darwin' && File.exists?('/etc/zshrc')
+      system 'sudo mv /etc/zshrc /etc/zshenv'
     end
 
   end
