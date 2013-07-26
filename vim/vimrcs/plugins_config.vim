@@ -120,6 +120,19 @@ map <leader>gbl :Gblame<cr>
 map <leader>gg :Git 
 map <leader>gpp :Git pp<cr>
 
+" rspec runner
+" Bundle 'thoughtbot/vim-rspec'
+" let g:rspec_command = "!bundle exec rspec {spec}"
+" command Spek :call RunCurrentSpecFile()<CR>
+" command Spekk :call RunLastSpec()<CR>
+" map <Leader>sk :call RunCurrentSpecFile()<CR>
+" map <Leader>skk :call RunLastSpec()<CR>
+
+Bundle 'skwp/vim-rspec'
+
+" RVM
+Bundle 'tpope/vim-rvm'
+
 " Color schemes
 Bundle 'mayansmoke'
 
