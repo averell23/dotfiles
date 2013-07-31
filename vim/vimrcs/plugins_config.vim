@@ -130,9 +130,6 @@ map <leader>gpp :Git pp<cr>
 
 Bundle 'skwp/vim-rspec'
 
-" RVM
-Bundle 'tpope/vim-rvm'
-
 " Color schemes
 Bundle 'mayansmoke'
 
