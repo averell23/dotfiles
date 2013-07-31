@@ -61,9 +61,9 @@ function rprompt {
     ch1=$col1${1[1]}
     ch2=$col1${1[2]}
     col_git="%{$fg[green]%}"
-    col_rvm="%{$fg[blue]%}"
+    col_ruby="%{$fg[blue]%}"
     git_b='$(get_git_prompt_info '%b' )'
-    rvm_b='$(get_rvm_prompt_info '%b' )'
+    ruby_b='$(rbenv_prompt_info '%b' ) '
 
     local _dir='$(_rprompt_dir)'
     
@@ -73,7 +73,7 @@ function rprompt {
 $rst$ch1\
 $col1$screen_s\
 $col_git$git_b\
-$col_rvm$rvm_b\
+$col_ruby$ruby_b\
 $col2%n@%m\
 $col1:\
 $col2%B$_dir%b\
