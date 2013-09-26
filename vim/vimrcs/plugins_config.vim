@@ -144,6 +144,6 @@ Bundle 'tpope/vim-rails'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-haml'
 Bundle 'slim-template/vim-slim'
-
+Bundle 'rodjek/vim-puppet'
 " Reenable the filtype
 filetype on           " Enable filetype detection
