@@ -145,5 +145,9 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-haml'
 Bundle 'slim-template/vim-slim'
 Bundle 'rodjek/vim-puppet'
+
+" Dash integration (Mac)
+Bundle 'rizzatti/funcoo.vim'
+Bundle 'rizzatti/dash.vim'
 " Reenable the filtype
 filetype on           " Enable filetype detection
