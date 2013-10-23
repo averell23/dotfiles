@@ -31,6 +31,7 @@ map <leader>o :BufExplorer<cr>
 
 
 Bundle 'mru.vim'
+Bundle 'wikipedia.vim'
 
 """"""""""""""""""""""""""""""
 " => MRU plugin
@@ -119,6 +120,11 @@ map <leader>gca :Gcommit -ma
 map <leader>gbl :Gblame<cr>
 map <leader>gg :Git 
 map <leader>gpp :Git pp<cr>
+
+" Syntastic
+Bundle 'scrooloose/syntastic'
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+map <leader>st :SyntasticCheck<cr>
 
 " rspec runner
 " Bundle 'thoughtbot/vim-rspec'
