@@ -124,6 +124,7 @@ map <leader>gpp :Git pp<cr>
 " Syntastic
 Bundle 'scrooloose/syntastic'
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+let g:synstatic_javascript_checkers = ['jsl']
 map <leader>st :SyntasticCheck<cr>
 
 " rspec runner
