@@ -11,6 +11,16 @@
 --nonib
 --notmstuff
 --noxcode
+
+--ignore-file=match:/tags/
+--ignore-file=match:/.tags/
+
 --ignore-dir=.kitchen
 --ignore-dir=tmp
 --ignore-dir=.chef
+--ignore-dir=vendor
+--ignore-dir=log
+--ignore-dir=doc
+--ignore-dir=coverage
+--ignore-dir=public/assets
+--ignore-dir=.jhw-cache
