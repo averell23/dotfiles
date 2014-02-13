@@ -2,7 +2,8 @@ require 'rake'
 
 desc "Hook our dotfiles into system-standard positions."
 task :install do
-  linkables = Dir.glob('**/**{.symlink}', File::FNM_DOTMATCH)
+  system('ln -s $HOME/Dropbox/misc/private $PWD/private')
+  linkables = Dir.glob('{**,private/**}/**.symlink', File::FNM_DOTMATCH)
 
   skip_all = false
   overwrite_all = false
@@ -30,7 +31,7 @@ task :install do
     backup = false
 
     file = linkable.split('/', 2).last.split('.symlink').last
-    target = "#{ENV["HOME"]}/.#{file}"
+    target = "#{ENV["HOME"]}/.#{file}".gsub(/\A\/?private\/?/, '')
 
     if File.exists?(target) || File.symlink?(target)
       unless skip_all || overwrite_all || backup_all
