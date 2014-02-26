@@ -4,4 +4,4 @@ alias 1password='/opt/google/chrome/chrome --allow-file-access-from-files file:/
 alias upall='git pull && bundle && rake db:migrate parallel:prepare'
 alias cdd='cd ~/Desktop'
 alias privdrop='encfs ~/Dropbox/private.encfs ~/private_box'
-alias privdrive='encfs "~/Google Drive/devteam.encfs" ~/private_devteam'
+alias bpkeys='encfs ~/Google\ Drive/access_keys.encfs ~/betterplace_keys'
