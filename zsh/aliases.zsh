@@ -6,3 +6,4 @@ alias cdd='cd ~/Desktop'
 alias privdrop='encfs ~/Dropbox/private.encfs ~/private_box'
 alias bpkeys='encfs ~/Google\ Drive/access_keys.encfs ~/betterplace_keys'
 hot() { ssh hotwater@web$1 }
+web() { ssh web$1 }
