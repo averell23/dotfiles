@@ -65,6 +65,7 @@ else
   let g:ctrlp_map = '<A-t>'
 endif
 map <c-b> :CtrlPBuffer<cr>
+map <leader>t :CtrlP<cr>
 
 let g:ctrlp_max_height = 20
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
@@ -105,6 +106,7 @@ map <leader>nf :NERDTreeFind<cr>
 Bundle 'ack.vim'
 
 " Ack
+let g:ackprg = 'ag --nogroup --nocolor --column'
 noremap <D-F> :Ack 
       
 Bundle 'amix/open_file_under_cursor.vim'
@@ -126,6 +128,8 @@ Bundle 'scrooloose/syntastic'
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 let g:synstatic_javascript_checkers = ['jsl']
 map <leader>st :SyntasticCheck<cr>
+
+Bundle 'airblade/vim-gitgutter'
 
 " rspec runner
 " Bundle 'thoughtbot/vim-rspec'
@@ -152,6 +156,7 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-haml'
 Bundle 'slim-template/vim-slim'
 Bundle 'rodjek/vim-puppet'
+Bundle "ekalinin/Dockerfile.vim"
 
 " Dash integration (Mac)
 Bundle 'rizzatti/funcoo.vim'
