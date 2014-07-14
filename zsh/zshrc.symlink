@@ -26,3 +26,6 @@ compinit
 
 # load every completion after autocomplete loads
 for config_file ($ZSH/**/*.zsh_completion) source $config_file
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
