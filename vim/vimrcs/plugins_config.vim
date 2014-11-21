@@ -129,6 +129,9 @@ let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 let g:synstatic_javascript_checkers = ['jsl']
 map <leader>st :SyntasticCheck<cr>
 
+" Tabular
+Bundle 'godlygeek/tabular'
+
 Bundle 'airblade/vim-gitgutter'
 
 " rspec runner
