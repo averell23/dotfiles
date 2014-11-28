@@ -103,11 +103,10 @@ map <leader>nn :NERDTreeTabsToggle<cr>
 map <leader>nb :NERDTreeFromBookmark 
 map <leader>nf :NERDTreeFind<cr>
 
-Bundle 'ack.vim'
+Bundle 'rking/ag.vim'
 
 " Ack
-let g:ackprg = 'ag --nogroup --nocolor --column'
-noremap <D-F> :Ack 
+noremap <D-F> :Ag 
       
 Bundle 'amix/open_file_under_cursor.vim'
 Bundle 'Lokaltog/vim-powerline'

@@ -7,3 +7,5 @@ alias privdrop='encfs ~/Dropbox/private.encfs ~/private_box'
 alias bpkeys='encfs ~/Google\ Drive/access_keys.encfs ~/betterplace_keys'
 hot() { ssh hotwater@web$1 }
 web() { ssh web$1 }
+hotchef() { ssh hotwater@web$1 sudo chef-client }
+hotyum() { ssh hotwater@web$1 sudo yum update -y $2 }
