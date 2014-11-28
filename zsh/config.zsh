@@ -4,6 +4,7 @@ else
   export PS1='%3~$(git_info_for_prompt)%# '
 fi
 
+export GATEWAY_USER=dhahn
 export EDITOR=vim
 export LSCOLORS="exfxcxdxbxegedabagacad"
 export CLICOLOR=true
