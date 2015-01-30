@@ -29,7 +29,7 @@
   cl = clone
         co = checkout
   lg = log
-        killorig = clean -f "*.orig *.BACKUP.* *.BASE.* *.LOCAL.* *.REMOTE.*"
+        killorig = clean -f "*.orig *.BACKUP.* *_BACKUP_* *.BASE.* *_BASE_* *.LOCAL.* *_LOCAL_* *.REMOTE.* *_REMOTE_*"
   pp = !"git pull $1 $2 && git push $1 $2"
         ppp = !"git pull $1 $2 && git push $1 $2 ; localeapp pull"
 
