@@ -1,8 +1,8 @@
---- 
-:verbose: true
+---
 :backtrace: false
-:benchmark: false
-:sources: 
-- http://rubygems.org/
-:update_sources: true
 :bulk_threshold: 1000
+:sources:
+- https://www.rubygems.org
+:update_sources: true
+:verbose: true
+benchmark: false
