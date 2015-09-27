@@ -18,6 +18,8 @@ filetype off                   " required!
 set rtp+=~/.dotfiles/vim/default_plugins/vundle
 call vundle#rc()
 
+Bundle 'derekwyatt/vim-scala'
+
 Bundle 'bufexplorer.zip'
 
 """"""""""""""""""""""""""""""
