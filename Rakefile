@@ -5,9 +5,9 @@ task :install do
   system('ln -s $HOME/Dropbox/misc/private $PWD/private')
   linkables = Dir.glob('{**,private/**}/**.symlink', File::FNM_DOTMATCH)
 
-  skip_all = false
-  overwrite_all = false
-  backup_all = false
+  skip_all = ENV['SKIP_ALL'] == 'yes'
+  overwrite_all = ENV['OVERWRITE_ALL'] == 'yes'
+  backup_all = ENV['BACKUP_ALL'] == 'yes'
   is_darwin = `uname -s`.strip == 'Darwin' 
 
   unless is_darwin && system('which realpath > /dev/null') # check realpath install
