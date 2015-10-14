@@ -1,11 +1,10 @@
 # shortcut to this dotfiles path is $ZSH
-export ZSH=$HOME/.dotfiles
+export DOTFILES=$HOME/.dotfiles
 
-# your project folder that we can `c [tab]` to
-export PROJECTS=~/Code
+setopt extended_glob
 
 # source every .zsh file in this rep
-for config_file ($ZSH/**/*.zsh) source $config_file
+for config_file ($DOTFILES/(^oh-my)#/*.zsh) source $config_file
 
 # use .localrc for SUPER SECRET CRAP that you don't
 # want in your public, versioned repo.
@@ -20,12 +19,84 @@ then
   source ~/.profile
 fi
 
-# initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
 
-# load every completion after autocomplete loads
-for config_file ($ZSH/**/*.zsh_completion) source $config_file
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+
+# check if there's no init script
+if ! zgen saved; then
+    echo "Creating a zgen save"
+
+    zgen oh-my-zsh
+
+    # oh my plugins
+    zgen oh-my-zsh plugins/git
+    zgen oh-my-zsh plugins/brew
+    zgen oh-my-zsh plugins/bundler
+    zgen oh-my-zsh plugins/common-aliases
+    zgen oh-my-zsh plugins/gem
+    zgen oh-my-zsh plugins/vagrant
+
+    # plugins
+    zgen load jimmijj/zsh-syntax-highlighting
+    # autosuggestions should be loaded last
+    # zgen load tarruda/zsh-autosuggestions
+
+    # theme
+    zgen oh-my-zsh themes/bira
+
+    # save all to init script
+    zgen save
+fi
+
+# Enable autosuggestions automatically.
+# zle-line-init() {
+#     zle autosuggest-start
+# }
+zle -N zle-line-init
+
+# Install fzf completion
+if [[ -d /usr/local/opt/fzf/shell ]]
+then
+  for config_file (/usr/local/opt/fzf/shell/*.zsh) source $config_file
+fi
+
