@@ -3,6 +3,7 @@ require 'rake'
 desc "Hook our dotfiles into system-standard positions."
 task :install do
   system('ln -s $HOME/Dropbox/misc/private $PWD/private')
+  system('./powerline_fonts/install.sh')
   linkables = Dir.glob('{**,private/**}/**.symlink', File::FNM_DOTMATCH)
 
   skip_all = ENV['SKIP_ALL'] == 'yes'
