@@ -2,6 +2,9 @@
 export DOTFILES=$HOME/.dotfiles
 
 setopt extended_glob
+setopt nobeep
+setopt nohistbeep
+setopt nolistbeep
 
 # source every .zsh file in this rep
 for config_file ($DOTFILES/(^oh-my)#/*.zsh) source $config_file
@@ -75,6 +78,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/common-aliases
     zgen oh-my-zsh plugins/gem
     zgen oh-my-zsh plugins/vagrant
+    zgen oh-my-zsh plugins/rbenv
 
     # plugins
     zgen load jimmijj/zsh-syntax-highlighting
@@ -82,7 +86,7 @@ if ! zgen saved; then
     # zgen load tarruda/zsh-autosuggestions
 
     # theme
-    zgen oh-my-zsh themes/bira
+    zgen load averell23/zsh_theme_averell averell.zsh-theme
 
     # save all to init script
     zgen save
@@ -99,4 +103,3 @@ if [[ -d /usr/local/opt/fzf/shell ]]
 then
   for config_file (/usr/local/opt/fzf/shell/*.zsh) source $config_file
 fi
-
