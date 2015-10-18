@@ -13,15 +13,6 @@ task :install do
   backup_all = ENV['BACKUP_ALL'] == 'yes'
   is_darwin = `uname -s`.strip == 'Darwin' 
 
-  unless is_darwin && system('which realpath > /dev/null') # check realpath install
-    puts "Installing realpath tool"
-    if system("gcc -Wall realpath.c -o realpath -framework CoreServices") && system('sudo cp realpath /usr/local/bin')
-      puts "Installed realpath tool"
-    else
-      puts "Could not build the realpath tool"
-    end
-  end
-
   # Move the zshenv, so that vim will correctly find rvm ruby... d'oh
   # see https://github.com/tpope/vim-rvm
   if is_darwin && File.exists?('/etc/zshenv')
