@@ -5,7 +5,7 @@ alias upall='git pull && bundle && rake db:migrate parallel:prepare'
 alias cdd='cd ~/Desktop'
 alias privdrop='encfs ~/Dropbox/private.encfs ~/private_box'
 alias bpkeys='encfs ~/Google\ Drive/access_keys.encfs ~/betterplace_keys'
-bp() { ssh betterplace@bp-$1.betterops.de }
+bps() { ssh betterplace@bp-$1.betterops.de }
 epo() { ssh betterplace@epo-$1.betterops.de }
-dha-bp() { ssh daniel.hahn@bp-$1.betterops.de }
+dha-bps() { ssh daniel.hahn@bp-$1.betterops.de }
 dha-epo() { ssh daniel.hahn@epo-$1.betterops.de }
