@@ -103,3 +103,5 @@ if [[ -d /usr/local/opt/fzf/shell ]]
 then
   for config_file (/usr/local/opt/fzf/shell/*.zsh) source $config_file
 fi
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
