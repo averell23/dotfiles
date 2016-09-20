@@ -1,6 +1,7 @@
 [user]
   name = Daniel Hahn
   email = dha@betterplace.org
+	signingkey = 5C640613
 [merge]
   tool = opendiff
 [core]
