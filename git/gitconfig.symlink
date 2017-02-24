@@ -39,3 +39,5 @@
   token = c663eeb827332740f53c12896a44decd
 [push]
 	default = simple
+[commit]
+	gpgsign = true
