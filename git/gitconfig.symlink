@@ -1,6 +1,6 @@
 [user]
-  name = Daniel Hahn
-  email = dha@betterplace.org
+	name = Daniel Hahn
+	email = dha@betterplace.org
 	signingkey = 5C640613
 [merge]
   tool = opendiff
@@ -39,3 +39,5 @@
   token = c663eeb827332740f53c12896a44decd
 [push]
 	default = simple
+[commit]
+	gpgsign = true
