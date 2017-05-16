@@ -1,0 +1,1 @@
+. $HOME/.gpg-agent-info
