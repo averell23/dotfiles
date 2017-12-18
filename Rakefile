@@ -2,16 +2,15 @@ require 'rake'
 
 desc "Hook our dotfiles into system-standard positions."
 task :install do
-  system('ln -s $HOME/Dropbox/misc/private $PWD/private')
   system('git submodule init')
   system('git submodule update')
   system('./powerline_fonts/install.sh')
-  linkables = Dir.glob('{**,private/**}/**.symlink', File::FNM_DOTMATCH)
+  linkables = Dir.glob('**/**.symlink', File::FNM_DOTMATCH)
 
   skip_all = ENV['SKIP_ALL'] == 'yes'
   overwrite_all = ENV['OVERWRITE_ALL'] == 'yes'
   backup_all = ENV['BACKUP_ALL'] == 'yes'
-  is_darwin = `uname -s`.strip == 'Darwin' 
+  is_darwin = `uname -s`.strip == 'Darwin'
 
   # Move the zshenv, so that vim will correctly find rvm ruby... d'oh
   # see https://github.com/tpope/vim-rvm
@@ -25,7 +24,7 @@ task :install do
     backup = false
 
     file = linkable.split('/', 2).last.split('.symlink').last
-    target = "#{ENV["HOME"]}/.#{file}".gsub(/\A\/?private\/?/, '')
+    target = "#{ENV["HOME"]}/.#{file}".gsub(/\.secret\Z/, '')
 
     if File.exists?(target) || File.symlink?(target)
       unless skip_all || overwrite_all || backup_all
@@ -57,12 +56,12 @@ task :uninstall do
     if File.symlink?(target)
       FileUtils.rm(target)
     end
-    
+
     # Replace any backups made during installation
     if File.exists?("#{ENV["HOME"]}/.#{file}.backup")
-      `mv "$HOME/.#{file}.backup" "$HOME/.#{file}"` 
+      `mv "$HOME/.#{file}.backup" "$HOME/.#{file}"`
     end
-  
+
     # Move the zshenv back, see above
     if `uname -s`.strip == 'Darwin' && File.exists?('/etc/zshrc')
       system 'sudo mv /etc/zshrc /etc/zshenv'
