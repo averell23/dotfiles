@@ -1,5 +1,5 @@
 alias reload!='. ~/.zshrc'
-alias upall='git pull && bundle && bin/yarn && rake db:migrate parallel:prepare'
+alias upall='git pull && bundle && bin/yarn && rake db:migrate'
 alias cdd='cd ~/Desktop'
 alias privdrop='encfs ~/Dropbox/private.encfs ~/private_box'
 alias bpkeys='encfs ~/Google\ Drive/access_keys.encfs ~/betterplace_keys'
