@@ -1,0 +1,25 @@
+#!/bin/sh
+if [ ! -d ".git" ]; then
+  echo Cannot update anything in a non-git repository
+  exit 1
+fi
+
+if [ -e ".ruby-version" ]; then
+  rbenv install -s
+  gem list bundler -i || gem install bundler
+fi
+
+git pull
+bundle
+
+if [ -x "bin/yarn" ]; then
+  bin/yarn
+else
+  echo "Skipping yarn, not installed"
+fi
+
+bundle exec rake db:migrate
+
+if [ "${PWD##*/}" == "betterplace" ]; then
+  bundle exec rake parallel:prepare
+fi
