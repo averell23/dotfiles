@@ -1,4 +1,7 @@
 #!/bin/sh
+
+set -e
+
 if [ ! -d ".git" ]; then
   echo Cannot update anything in a non-git repository
   exit 1
@@ -18,7 +21,9 @@ else
   echo "Skipping yarn, not installed"
 fi
 
-bundle exec rake db:migrate
+if [ -d "db" ]; then
+  bundle exec rake db:migrate
+fi
 
 if [ "${PWD##*/}" == "betterplace" ]; then
   bundle exec rake parallel:prepare
