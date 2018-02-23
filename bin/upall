@@ -9,7 +9,7 @@ fi
 
 if [ -e ".ruby-version" ]; then
   rbenv install -s
-  gem list bundler -i || gem install bundler
+  gem list bundler -i > /dev/null || gem install bundler
 fi
 
 git pull
