@@ -21,7 +21,7 @@ else
   echo "Skipping yarn, not installed"
 fi
 
-if [ -d "db" ]; then
+if [ -f "config/database.yml" ]; then
   bundle exec rake db:migrate
 fi
 
