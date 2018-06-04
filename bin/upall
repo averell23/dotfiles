@@ -22,7 +22,9 @@ else
 fi
 
 if [ -f "config/database.yml" ]; then
-  bundle exec rake db:migrate
+  bundle exec rake db:migrate db:test:prepare
+else
+  echo "No database config, not migrating"
 fi
 
 if [ "${PWD##*/}" == "betterplace" ]; then
