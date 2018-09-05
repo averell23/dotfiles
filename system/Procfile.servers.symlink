@@ -1,0 +1,4 @@
+mysql: mysqld
+postgresql: /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
+elasticsearch: elasticsearch
+redis: redis-server
