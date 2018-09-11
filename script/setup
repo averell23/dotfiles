@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+system('git submodule init')
+system('git submodule update')
+system('./powerline_fonts/install.sh')
+linkables = Dir.glob('**/**.symlink', File::FNM_DOTMATCH)
+
+skip_all = ENV['SKIP_ALL'] == 'yes'
+overwrite_all = ENV['OVERWRITE_ALL'] == 'yes'
+backup_all = ENV['BACKUP_ALL'] == 'yes'
+is_darwin = `uname -s`.strip == 'Darwin'
+
+# Move the zshenv, so that vim will correctly find rvm ruby... d'oh
+# see https://github.com/tpope/vim-rvm
+if is_darwin && File.exists?('/etc/zshenv')
+  puts "Moving zshrc on this Mac"
+  system 'sudo mv /etc/zshenv /etc/zshrc'
+end
+
+linkables.each do |linkable|
+  overwrite = false
+  backup = false
+
+  file = linkable.split('/', 2).last.split('.symlink').last
+  target = "#{ENV["HOME"]}/.#{file}".gsub(/\.secret\Z/, '')
+
+  if File.exists?(target) || File.symlink?(target)
+    unless skip_all || overwrite_all || backup_all
+      puts "File already exists: #{target}, what do you want to do? [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all"
+      case STDIN.gets.chomp
+      when 'o' then overwrite = true
+      when 'b' then backup = true
+      when 'O' then overwrite_all = true
+      when 'B' then backup_all = true
+      when 'S' then skip_all = true
+      when 's' then next
+      end
+    end
+    FileUtils.rm_rf(target) if overwrite || overwrite_all
+    `mv "$HOME/.#{file}" "$HOME/.#{file}.backup"` if backup || backup_all
+  end
+  `ln -s "$PWD/#{linkable}" "#{target}"`
+end
