@@ -1,4 +1,4 @@
-mysql: mysqld
+mysql: mysqld --defaults-file=/usr/local/etc/my.cnf
 postgresql: /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
 elasticsearch: elasticsearch
 redis: redis-server
