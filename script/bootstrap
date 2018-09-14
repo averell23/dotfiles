@@ -125,6 +125,30 @@ link_file () {
   fi
 }
 
+install_brewfile() {
+  if ! [ -f Brewfile ]
+  then
+    info 'Setting up Brewfile. Select one:'
+    unset options i
+    while IFS= read -r -d $'\0' f; do
+      options[i++]="$f"
+    done < <(find . -maxdepth 1 -type f -name "Brewfile.*" -print0 )
+
+    select opt in "${options[@]}"; do
+      echo $opt
+      case $opt in
+        ./Brewfile.*)
+          ln -s $opt Brewfile
+          break
+          ;;
+        *)
+          echo 'Illegal option'
+          ;;
+      esac
+    done
+  fi
+}
+
 install_dotfiles () {
   info 'installing dotfiles'
 
@@ -137,8 +161,16 @@ install_dotfiles () {
   done
 }
 
+# Install powerline fonts
+info "Installing powerline fonts"
+git submodule init
+git submodule update
+source powerline_fonts/install.sh
+
+
 # Does not do much for us...
 # setup_gitconfig
+install_brewfile
 install_dotfiles
 
 # If we're on a Mac, let's install and setup homebrew.
