@@ -13,7 +13,6 @@ brew 'mas'
 brew 'mysql@5.7'
 brew 'nginx', restart_service: :changed
 brew 'node'
-brew 'phantomjs'
 brew 'postgresql'
 brew 'pv'
 brew 'rbenv'
