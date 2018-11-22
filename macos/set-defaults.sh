@@ -139,17 +139,15 @@ defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.Web
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 defaults write com.apple.Safari ShowFavoritesBar -bool false
 defaults write com.apple.Safari AutoShowToolbarInFullScreen -bool false
-# Disable all autofill crap things, we use 1p
-defaults write com.apple.Safari AutoFillCreditCardData -bool false
-defaults write com.apple.Safari AutoFillFromAddressBook -bool false
-defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
-defaults write com.apple.Safari AutoFillPasswords -bool false
 
 # Disable AutoFill
 defaults write com.apple.Safari AutoFillFromAddressBook -bool false
 defaults write com.apple.Safari AutoFillPasswords -bool false
 defaults write com.apple.Safari AutoFillCreditCardData -bool false
 defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
+
+# Do not auto-open "Safe" downloads
+defaults write com.apple.Safari AutoOpenSafeDownloads -boolean false
 
 # Warn about fraudulent websites
 defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
