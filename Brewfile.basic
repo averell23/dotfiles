@@ -4,7 +4,6 @@ tap 'homebrew/bundle'
 
 brew 'direnv'
 brew 'git'
-brew 'gnupg'
 brew 'go'
 brew 'imagemagick'
 brew 'jenv'
