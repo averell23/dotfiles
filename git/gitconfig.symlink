@@ -1,7 +1,7 @@
 [user]
 	name = Daniel Hahn
 	email = dha@betterplace.org
-	signingkey = 5C640613
+	# signingkey = 5C640613
 [merge]
   tool = opendiff
 [core]
@@ -40,7 +40,7 @@
 [push]
 	default = simple
 [commit]
-	gpgsign = true
+	# gpgsign = true
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
