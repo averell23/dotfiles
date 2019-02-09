@@ -4,7 +4,6 @@ tap 'homebrew/bundle'
 
 brew 'direnv'
 brew 'git'
-brew 'gnupg'
 brew 'go'
 brew 'imagemagick'
 brew 'jenv'
@@ -37,7 +36,6 @@ cask 'postman'
 cask 'sequel-pro'
 cask 'skype'
 cask 'slack'
-cask 'vagrant'
 cask 'virtualbox'
 
 cask 'coconutbattery'
@@ -59,6 +57,7 @@ cask 'grandperspective'
 cask 'libreoffice'
 cask 'moneymoney'
 cask 'opera'
+cask 'slack'
 cask 'teamviewer'
 cask 'transmission'
 cask 'vlc'
@@ -66,7 +65,6 @@ cask 'whatsapp'
 
 mas "Browser Fairy", id: 483014855
 mas "Microsoft Remote Desktop", id: 715768417
-mas "Slack", id: 803453959
 mas "Trello", id: 1278508951
 mas "Wunderlist", id: 410628904
 mas "Xcode", id: 497799835
