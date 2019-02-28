@@ -126,26 +126,17 @@ link_file () {
 }
 
 install_brewfile() {
+  SERIAL=$(ioreg -c "IOPlatformExpertDevice" | awk -F '"' '/IOPlatformSerialNumber/ {print $4}')
   if ! [ -f Brewfile ]
   then
-    info 'Setting up Brewfile. Select one:'
-    unset options i
-    while IFS= read -r -d $'\0' f; do
-      options[i++]="$f"
-    done < <(find . -maxdepth 1 -type f -name "Brewfile.*" -print0 )
-
-    select opt in "${options[@]}"; do
-      echo $opt
-      case $opt in
-        ./Brewfile.*)
-          ln -s $opt Brewfile
-          break
-          ;;
-        *)
-          echo 'Illegal option'
-          ;;
-      esac
-    done
+    info 'Setting up Brewfile'
+    MY_BREWFILE="./machine_configs/Brewfile.${SERIAL}"
+    if ! [ -f "$MY_BREWFILE" ]
+    then
+      info "Creating new Brewfile for this machine: $MY_BREWFILE"
+      cp Brewfile.default "$MY_BREWFILE"
+    fi
+    ln -s $MY_BREWFILE Brewfile
   fi
 }
 
@@ -170,12 +161,12 @@ source powerline_fonts/install.sh
 
 # Does not do much for us...
 # setup_gitconfig
-install_brewfile
 install_dotfiles
 
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]
 then
+  install_brewfile
   info "installing dependencies"
   if source bin/dot | while read -r data; do info "$data"; done
   then
