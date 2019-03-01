@@ -1,163 +1,209 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 #
 # bootstrap installs things.
 
-cd "$(dirname "$0")/.."
-DOTFILES_ROOT=$(pwd -P)
+require 'digest'
+require 'fileutils'
+require 'io/console'
+require 'json'
+require 'socket'
 
-set -e
+module InstallUtils
+  def info(text)
+    puts "\r  [ \033[00;34m..\033[0m ] #{text.strip}\n"
+  end
 
-echo ''
+  def user(text)
+    puts "\r  [ \033[00;33m..\033[0m ] #{text}\n"
+  end
 
-info () {
-  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
-}
+  def success(text)
+    puts "\r\033[2K  [ \033[00;32mOK\033[0m ] #{text}\n"
+  end
 
-user () {
-  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
-}
+  def fail(text)
+    puts "\r\033[2K  [ \033[00;32mOK\033[0m ] #{text}\n"
+    puts
+    exit 1
+  end
 
-success () {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-}
+  def run_bash(file)
+    run_command('/usr/bin/env', 'bash', file)
+  end
 
-fail () {
-  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-  echo ''
-  exit
-}
+  def run_command(*command)
+    IO.popen(command + [:err=>[:child, :out]]) do |io|
+      io.each { |line| info line }
+    end
+  end
+end
 
-link_file () {
-  local src=$1 dst=$2
+class DotfileInstall
+  include InstallUtils
 
-  local overwrite= backup= skip=
-  local action=
+  def get_mode(file)
+    File.exists?(file) or return :link
+    @global_mode and return @global_mode
 
-  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
-  then
+    selection = ''
+    while !%w(s S o O b B a).include?(selection)
+      user "File already exists: #{file}. What do you want to do?\n[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all, [a]bort?"
+      selection = STDIN.getch
+    end
+    case selection
+    when ?s then :skip
+    when ?S then @global_mode = :skip
+    when ?o then :overwrite
+    when ?O then @global_mode = :overwrite
+    when ?b then :backup
+    when ?B then @global_mode = :backup
+    when ?a then exit 1
+    end
+  end
 
-    if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
-    then
+  def link_file(target, link)
+    case get_mode(link)
+    when :skip
+      success "Skipped #{link}"
+      return
+    when :backup
+      FileUtils.mv link, "#{link}.backup"
+      success "Backed up #{link} to #{link}.backup"
+    when :overwrite
+      FileUtils.rm link
+      success "removed #{link}"
+    end
+    FileUtils.ln_s File.expand_path(target), link
+    success "Linked #{target} to #{link}"
+  end
 
-      local currentSrc="$(readlink $dst)"
+  def run
+    Dir['**/*.symlink'].each do |dotfile|
+      link = '.' << dotfile.gsub(/^[^\/]*\//, '').gsub('secret.', '').gsub('.symlink', '')
+      FileUtils.mkdir_p File.dirname('link')
+      link_file dotfile, File.join(ENV['HOME'], link)
+    end
+  end
+end
 
-      if [ "$currentSrc" == "$src" ]
-      then
+class Configuration
+  include InstallUtils
 
-        skip=true;
+  attr_reader :id
 
-      else
+  def packages ; @data['packages'] || [] ; end
+  def casks ; @data['casks'] || [] ; end
+  def mas ; @data['mas'] || [] ; end
 
-        user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
-        [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
-        read -n 1 action
+  def initialize(id)
+    @id = id
+  end
 
-        case "$action" in
-          o )
-            overwrite=true;;
-          O )
-            overwrite_all=true;;
-          b )
-            backup=true;;
-          B )
-            backup_all=true;;
-          s )
-            skip=true;;
-          S )
-            skip_all=true;;
-          * )
-            ;;
-        esac
+  def config_dir
+    File.join('.', 'device_configs')
+  end
 
-      fi
+  def ensure_config
+    filename = config_file(id)
+    return if File.exists?(filename)
+    File.open(filename, 'w') do |f|
+      f.write(JSON.pretty_generate({
+        name: Socket.gethostname.strip,
+        packages: [],
+        casks: [],
+        includes: ['defaults']
+      }))
+    end
+    info "Created new config for this machine: #{filename}"
+  end
 
-    fi
+  def config_file(name)
+    File.join(config_dir, "#{name}.json")
+  end
 
-    overwrite=${overwrite:-$overwrite_all}
-    backup=${backup:-$backup_all}
-    skip=${skip:-$skip_all}
+  def read_json(name)
+    File.open(config_file(name)) { |f| JSON.parse(f.read) }
+  end
 
-    if [ "$overwrite" == "true" ]
-    then
-      rm -rf "$dst"
-      success "removed $dst"
-    fi
+  def load_includes(include_configs)
+    include_configs or return
+    include_configs.each do |inc|
+      include_data = read_json(inc)
+      @data = @data.merge(include_data) do |key, oldval, newval|
+        oldval.is_a?(Array) && !(key == 'includes') ? (oldval + newval).uniq : oldval
+      end
+      load_includes(include_data['includes'])
+    end
+  end
 
-    if [ "$backup" == "true" ]
-    then
-      mv "$dst" "${dst}.backup"
-      success "moved $dst to ${dst}.backup"
-    fi
+  def load
+    ensure_config
+    @data = read_json(id)
+    load_includes(@data['includes'])
+    self
+  end
 
-    if [ "$skip" == "true" ]
-    then
-      success "skipped $src"
-    fi
-  fi
+end
 
-  if [ "$skip" != "true" ]  # "false" or empty
-  then
-    ln -s "$1" "$2"
-    success "linked $1 to $2"
-  fi
-}
+class InstallActions
+  include InstallUtils
 
-install_brewfile() {
-  SERIAL=$(ioreg -c "IOPlatformExpertDevice" | awk -F '"' '/IOPlatformSerialNumber/ {print $4}')
-  if ! [ -f Brewfile ]
-  then
-    info 'Setting up Brewfile'
-    MY_BREWFILE="./machine_configs/Brewfile.${SERIAL}"
-    if ! [ -f "$MY_BREWFILE" ]
-    then
-      info "Creating new Brewfile for this machine: $MY_BREWFILE"
-      cp Brewfile.default "$MY_BREWFILE"
-    fi
-    ln -s $MY_BREWFILE Brewfile
-  fi
-}
+  attr_reader :config
 
-install_dotfiles () {
-  info 'installing dotfiles'
+  def os_name ; @os_name ||= `uname -s`.strip ; end
+  def macOS? ; os_name == 'Darwin' ; end
 
-  local overwrite_all=false backup_all=false skip_all=false
+  def serial
+    @serial ||= if macOS?
+      ioreg = `ioreg -c "IOPlatformExpertDevice"`
+      ioreg.match(/\"IOPlatformSerialNumber\" = \"(.*)\"/)[1]
+    else
+      info "Cannot currently get serial for Linux device"
+      "UNKOWN-LINUX"
+    end
+  end
 
-  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 3 -name '*.symlink' -not -path '*.git*')
-  do
-    dirname=${src#"${DOTFILES_ROOT}"}
-    dirname=${dirname%/*/*}
-    dirname=${dirname#/}
-    echo "DIR $dirname"
-    destname=${src%.*}
-    destname=${destname%.secret}
-    echo $destname
-    mkdir -p "$HOME/.$dirname"
-    dst="$HOME/.${dirname}/$(basename "${destname}")"
-    link_file "$src" "$dst"
-  done
-}
+  def device_id
+    Digest::MD5.hexdigest(serial)
+  end
 
-# Install powerline fonts
-info "Installing powerline fonts"
-git submodule init
-git submodule update
-source powerline_fonts/install.sh
+  def load_config
+    @config = Configuration.new(device_id).load
+  end
 
+  def setup_powerline_fonts
+    info "Installing powerline fonts"
+    run_command 'git', 'submodule', 'init'
+    run_command 'git', 'submodule', 'update'
+    run_bash "powerline_fonts/install.sh"
+  end
 
-install_dotfiles
+  def generate_brewfile(config)
+    File.open('Brewfile', 'w') do |f|
+      f.puts "# Generated by dotfiles. DO NOT EDIT\n"
+      f.puts "cask_args appdir: '/Applications'\n"
+      f.puts "tap 'homebrew/bundle'\n"
+      f.puts
+      config.packages.each { |p| f.puts "brew '#{p}'"}
+      f.puts
+      config.casks.each { |c| f.puts "cask '#{c}'"}
+      f.puts
+      config.mas.each { |m| f.puts "mas #{m}"}
+    end
+    info "Generated Brewfile"
+  end
 
-# If we're on a Mac, let's install and setup homebrew.
-if [ "$(uname -s)" == "Darwin" ]
-then
-  install_brewfile
-  info "installing dependencies"
-  if source bin/dot | while read -r data; do info "$data"; done
-  then
-    success "dependencies installed"
-  else
-    fail "error installing dependencies"
-  fi
-fi
+  def run
+    info "Detected #{os_name} with serial #{serial}, device_id #{device_id}"
+    load_config
+    generate_brewfile(config)
+    setup_powerline_fonts if macOS?
+    DotfileInstall.new.run
+    run_command 'bin/dot'
+    success "Installation complete"
+  end
 
-echo ''
-echo '  All installed!'
+  def self.run ; new.run ;end
+end
+
+InstallActions.run
