@@ -10,7 +10,8 @@
       "vim",
       "watch",
       "wget",
-      "zsh"
+      "zsh",
+      "pv"
   ],
   "casks": [
   ]
