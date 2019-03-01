@@ -1,0 +1,17 @@
+{
+  "name": "dha.betterplace.dev",
+  "packages": [
+
+  ],
+  "casks": [
+    "docker-toolbox",
+    "java",
+    "ssh-tunnel-manager",
+    "virtualbox"
+  ],
+  "includes": [
+    "defaults",
+    "default_casks",
+    "dev_defaults"
+  ]
+}
