@@ -1,0 +1,17 @@
+{
+  "packages": [
+      "direnv",
+      "git",
+      "links",
+      "mas",
+      "rbenv",
+      "telnet",
+      "tmux",
+      "vim",
+      "watch",
+      "wget",
+      "zsh"
+  ],
+  "casks": [
+  ]
+}
