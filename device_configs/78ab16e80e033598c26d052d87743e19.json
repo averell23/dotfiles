@@ -1,5 +1,6 @@
 {
   "name": "Auberon.localhost",
+  "munki": "yes",
   "packages": [
     "jenv",
     "youtube-dl"
@@ -20,11 +21,7 @@
     "vlc"
   ],
   "mas": [
-    "\"Browser Fairy\", id: 483014855",
-    "\"Microsoft Remote Desktop\", id: 715768417",
-    "\"Trello\", id: 1278508951",
-    "\"Wunderlist\", id: 410628904",
-    "\"Xcode\", id: 497799835"
+    ["Xcode", "id: 497799835"]
   ],
   "includes": [
     "defaults",

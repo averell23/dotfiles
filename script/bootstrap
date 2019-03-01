@@ -84,13 +84,40 @@ class DotfileInstall
       link_file dotfile, File.join(ENV['HOME'], link)
     end
   end
+
+  def self.run
+    new.run
+  end
 end
 
 class Configuration
   include InstallUtils
 
-  attr_reader :id
+  def config_dir
+    File.join('.', 'device_configs')
+  end
 
+  def munki? ; %w(yes enable on).include?(@data['munki']) ;end
+  def os_name ; @os_name ||= `uname -s`.strip ; end
+  def macOS? ; os_name == 'Darwin' ; end
+
+  def serial
+    @serial ||= if macOS?
+      ioreg = `ioreg -c "IOPlatformExpertDevice"`
+      ioreg.match(/\"IOPlatformSerialNumber\" = \"(.*)\"/)[1]
+    else
+      info "Cannot currently get serial for Linux device"
+      "UNKOWN-LINUX"
+    end
+  end
+
+  def device_id
+    Digest::MD5.hexdigest(serial)
+  end
+
+  def packages ; brew_lines('packages', 'brew')  ; end
+  def casks ; brew_lines('casks', 'cask') || [] ; end
+  def mas ; brew_lines('mas', 'mas') || [] ; end
 
   def brew_lines(section, prefix)
     @data[section] or return []
@@ -103,20 +130,8 @@ class Configuration
     end
   end
 
-  def packages ; brew_lines('packages', 'brew')  ; end
-  def casks ; brew_lines('casks', 'cask') || [] ; end
-  def mas ; brew_lines('mas', 'mas') || [] ; end
-
-  def initialize(id)
-    @id = id
-  end
-
-  def config_dir
-    File.join('.', 'device_configs')
-  end
-
   def ensure_config
-    filename = config_file(id)
+    filename = config_file(device_id)
     return if File.exists?(filename)
     File.open(filename, 'w') do |f|
       f.write(JSON.pretty_generate({
@@ -150,38 +165,20 @@ class Configuration
 
   def load
     ensure_config
-    @data = read_json(id)
+    @data = read_json(device_id)
     load_includes(@data['includes'])
+    info "Loaded configuration for #{serial}, id: #{device_id}, macOS: #{macOS?}"
     self
+  end
+
+  def self.load
+    new.load
   end
 
 end
 
 class InstallActions
   include InstallUtils
-
-  attr_reader :config
-
-  def os_name ; @os_name ||= `uname -s`.strip ; end
-  def macOS? ; os_name == 'Darwin' ; end
-
-  def serial
-    @serial ||= if macOS?
-      ioreg = `ioreg -c "IOPlatformExpertDevice"`
-      ioreg.match(/\"IOPlatformSerialNumber\" = \"(.*)\"/)[1]
-    else
-      info "Cannot currently get serial for Linux device"
-      "UNKOWN-LINUX"
-    end
-  end
-
-  def device_id
-    Digest::MD5.hexdigest(serial)
-  end
-
-  def load_config
-    @config = Configuration.new(device_id).load
-  end
 
   def setup_powerline_fonts
     info "Installing powerline fonts"
@@ -203,12 +200,20 @@ class InstallActions
     info "Generated Brewfile"
   end
 
+  def setup_munki
+    run_command 'brew', 'cask', 'install', 'munki'
+    munki_url = File.open('munki/repo_url.secret.txt') { |f| f.read }.strip
+    run_command  'sudo', 'defaults', 'write', '/Library/Preferences/ManagedInstalls SoftwareRepoURL', munki_url
+    info "Set munki repo to #{munki_url}"
+    run_command 'sudo', 'managedsoftwareupdate', '--verbose'
+  end
+
   def run
-    info "Detected #{os_name} with serial #{serial}, device_id #{device_id}"
-    load_config
+    config = Configuration.load
     generate_brewfile(config)
-    setup_powerline_fonts if macOS?
-    DotfileInstall.new.run
+    setup_powerline_fonts if config.macOS?
+    DotfileInstall.run
+    setup_munki if config.munki?
     run_command 'bin/dot'
     success "Installation complete"
   end
