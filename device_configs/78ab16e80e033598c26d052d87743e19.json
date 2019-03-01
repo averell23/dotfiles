@@ -1,55 +1,23 @@
 {
   "name": "Auberon.localhost",
   "packages": [
-    "go",
-    "imagemagick",
     "jenv",
-    "libmagic",
-    "mysql@5.7",
-    "node",
-    "postgresql",
-    "rbenv",
-    "pv",
     "youtube-dl"
   ],
   "casks": [
-    "1password",
-    "atom",
-    "chromium",
     "coconutbattery",
     "cryptomator",
-    "cyberduck",
-    "dash",
-    "docker-toolbox",
     "dropbox",
     "evernote",
     "filebot",
-    "firefox",
-    "fork",
-    "google-chrome-canary",
-    "google-chrome",
-    "gpg-suite",
-    "grandperspective",
     "handbrake",
-    "iterm2",
     "java",
     "jdownloader",
-    "libreoffice",
-    "moneymoney",
-    "opera",
-    "postman",
-    "sequel-pro",
-    "skype",
-    "slack",
-    "slack",
     "sonos",
     "steam",
-    "teamviewer",
     "transmission",
-    "tunnelblick",
     "virtualbox",
-    "vlc",
-    "whatsapp"
+    "vlc"
   ],
   "mas": [
     "\"Browser Fairy\", id: 483014855",
@@ -59,6 +27,8 @@
     "\"Xcode\", id: 497799835"
   ],
   "includes": [
-    "defaults"
+    "defaults",
+    "default_casks",
+    "dev_defaults"
   ]
 }
