@@ -203,7 +203,12 @@ class InstallActions
   def setup_munki
     run_command 'brew', 'cask', 'install', 'munki'
     munki_url = File.open('munki/repo_url.secret.txt') { |f| f.read }.strip
-    run_command  'sudo', 'defaults', 'write', '/Library/Preferences/ManagedInstalls SoftwareRepoURL', munki_url
+    run_command 'sudo', 'cp', 'munki/munki_middleware_gcs.py', '/usr/local/munki/'
+    run_command 'sudo', 'chown', 'root:wheel', '/usr/local/munki/munki_middleware_gcs.py'
+    run_command 'sudo', 'cp', 'munki/google_key.secret.json', '/usr/local/munki/gcs.json'
+    run_command 'sudo', 'chown', 'root:wheel', '/usr/local/munki/gcs.json'
+    run_command 'sudo', 'chmod', '0400', '/usr/local/munki/gcs.json'
+    run_command 'sudo', 'defaults', 'write', '/Library/Preferences/ManagedInstalls SoftwareRepoURL', munki_url
     info "Set munki repo to #{munki_url}"
     run_command 'sudo', 'managedsoftwareupdate', '--verbose'
   end
