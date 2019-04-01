@@ -6,7 +6,6 @@
     "libmagic",
     "mysql@5.7",
     ["nginx", "\"restart_service\": \"changed\""],
-    "node",
-    "postgresql"
+    "node"
   ]
 }
