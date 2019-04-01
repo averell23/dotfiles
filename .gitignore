@@ -1,3 +1,10 @@
+atom/atom.symlink/*
+!atom/atom.symlink/config.json
+!atom/atom.symlink/init.coffee
+!atom/atom.symlink/config.cson
+!atom/atom.symlink/keymap.cson
+!atom/atom.symlink/snippets.cson
+!atom/atom.symlink/styles.less
 sublime2/User/Package\ Control.sublime-settings
 vim/vim.symlink/.netrwhist
 vim/temp_dirs
