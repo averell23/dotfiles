@@ -6,19 +6,6 @@
     "youtube-dl"
   ],
   "casks": [
-    "coconutbattery",
-    "cryptomator",
-    "dropbox",
-    "evernote",
-    "filebot",
-    "handbrake",
-    "java",
-    "jdownloader",
-    "sonos",
-    "steam",
-    "transmission",
-    "virtualbox",
-    "vlc"
   ],
   "mas": [
     ["Xcode", "id: 497799835"]
