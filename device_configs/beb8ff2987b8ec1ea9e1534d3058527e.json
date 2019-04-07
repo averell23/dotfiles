@@ -1,0 +1,13 @@
+{
+  "name": "nikki.localdomain",
+  "munki": "yes",
+  "packages": [
+
+  ],
+  "casks": [
+
+  ],
+  "includes": [
+    "defaults"
+  ]
+}

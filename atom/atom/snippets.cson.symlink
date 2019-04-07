@@ -13,3 +13,17 @@
 #     'prefix': 'log'
 #     'body': 'console.log $1'
 #
+
+'.source.gfm':
+  'yen':
+    'prefix': 'yen'
+    'body': '¥'
+  'eur':
+    'prefix': 'eur'
+    'body': '€'
+  'image':
+    'prefix': 'img'
+    'body': '{% include image.html src="${1:image.jpg}" align="${2:fit}" caption="${3:Caption}" %}$4'
+  'article_link':
+    'prefix': 'inlink'
+    'body': '[{$1:Text}]({{ site.baseurl }}{% ${2:article_name} %})$4'
