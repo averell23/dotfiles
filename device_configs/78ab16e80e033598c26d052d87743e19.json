@@ -12,7 +12,6 @@
   ],
   "includes": [
     "defaults",
-    "default_casks",
     "dev_defaults"
   ]
 }
