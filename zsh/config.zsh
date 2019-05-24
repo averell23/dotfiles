@@ -1,5 +1,3 @@
-export GATEWAY_USER=dhahn
-export BASTION_USER=daniel.hahn
 export EDITOR=vim
 export LSCOLORS="exfxcxdxbxegedabagacad"
 export CLICOLOR=true
