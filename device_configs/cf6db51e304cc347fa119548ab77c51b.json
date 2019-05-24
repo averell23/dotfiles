@@ -1,0 +1,14 @@
+{
+  "name": "Mervyn.local",
+  "packages": [
+
+  ],
+  "casks": [
+
+  ],
+  "includes": [
+    "defaults",
+    "default_casks",
+    "dev_defaults"
+  ]
+}
