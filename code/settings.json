@@ -1,9 +1,0 @@
-{
-    "workbench.startupEditor": "newUntitledFile",
-    "workbench.colorTheme": "Solarized Light",
-    "atomKeymap.promptV3Features": true,
-    "editor.multiCursorModifier": "ctrlCmd",
-    "editor.formatOnPaste": true,
-    "workbench.editor.tabSizing": "shrink",
-    "window.nativeTabs": true
-}
