@@ -62,6 +62,7 @@ class DotfileInstall
   end
 
   def link_file(target, link)
+    puts "#{target} -> #{link.inspect}"
     case get_mode(link)
     when :skip
       success "Skipped #{link}"
@@ -80,8 +81,17 @@ class DotfileInstall
   def run
     Dir['**/*.symlink'].each do |dotfile|
       link = '.' << dotfile.gsub(/^[^\/]*\//, '').gsub('secret.', '').gsub('.symlink', '')
-      FileUtils.mkdir_p File.dirname('link')
+      FileUtils.mkdir_p File.join(ENV['HOME'], File.dirname(link))
       link_file dotfile, File.join(ENV['HOME'], link)
+    end
+    Dir['*/link_targets'].each do |targetfile|
+      File.open(targetfile).each_line do |line|
+        file, directory = line.split(',')
+        directory = directory.gsub('$HOME', ENV['HOME']).gsub('~', ENV['HOME']).gsub("\n", '')
+        puts file
+        puts directory.inspect
+        link_file File.join(File.dirname(targetfile), file), File.join(directory, file)
+      end
     end
   end
 
