@@ -217,7 +217,7 @@ class InstallActions
   end
 
   def check_secrets
-    return if File.read('system/secret_status.secret').strip == 'unlocked'
+    return if File.read('system/secret_status.secret.txt').strip == 'unlocked'
     puts "The secrets are not unlocked, cannot continue"
     exit 1
   end
