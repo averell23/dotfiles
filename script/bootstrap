@@ -216,7 +216,14 @@ class InstallActions
     run_command 'sudo', '/usr/local/munki/managedsoftwareupdate', '-v'
   end
 
+  def check_secrets
+    return if File.read('system/secret_status').strip == 'unlocked'
+    puts "The secrets are not unlocked, cannot continue"
+    exit 1
+  end
+
   def run
+    check_secrets
     config = Configuration.load
     generate_brewfile(config)
     setup_powerline_fonts if config.macOS?
