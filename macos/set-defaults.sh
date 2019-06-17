@@ -27,6 +27,7 @@
 # 10: Put display to sleep
 # 11: Launchpad
 # 12: Notification Center
+# 13: Lock screen (from mojave on or so)
 # Top left screen corner → Mission Control
 
 # Program overview in top left
@@ -42,7 +43,7 @@ defaults write com.apple.dock wvous-br-corner -int 4
 defaults write com.apple.dock wvous-br-modifier -int 0
 
 # Power save if we're in the bottom-left hot corner with alt.
-defaults write com.apple.dock wvous-bl-corner -int 10
+defaults write com.apple.dock wvous-bl-corner -int 13
 defaults write com.apple.dock wvous-bl-modifier -int 524288
 
 # Set language and text formats
