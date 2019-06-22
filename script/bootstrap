@@ -230,7 +230,7 @@ class InstallActions
     DotfileInstall.run
     setup_munki if config.munki?
     run_command 'bin/dot'
-    run_command 'vim -c "BundleInstall" -c "q" -c "q"'
+    run_command 'vim', '+BundleInstall', '+qall'
     success "Installation complete"
   end
 
