@@ -151,6 +151,9 @@ Bundle 'mayansmoke'
 " Global Search&Replace
 Bundle 'greplace.vim'
 
+" Command-T file open
+Bundle 'wincent/command-t'
+
 " File type plugins
 Bundle 'vim-coffee-script'
 Bundle 'groenewege/vim-less'
