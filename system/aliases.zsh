@@ -11,3 +11,7 @@ fi
 
 alias devserv="forego start -f ~/.Procfile.servers"
 alias cdot='cd ~/.dotfiles'
+alias cdn='cd ~/Code/averell23/notizen'
+
+alias grep='grep --color'
+alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
