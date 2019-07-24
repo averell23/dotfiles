@@ -1,10 +1,11 @@
 {
-  "name": "Mervyn.local",
+  "name": "Titania.local",
   "packages": [
 
   ],
   "casks": [
-
+    "virtualbox",
+    "virtualbox-extension-pack"
   ],
   "includes": [
     "defaults",
