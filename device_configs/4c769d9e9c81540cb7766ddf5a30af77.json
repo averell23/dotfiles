@@ -1,0 +1,14 @@
+{
+  "name": "Cluracan.local",
+  "munki": yes,
+  "packages": [
+    "youtube-dl"
+  ],
+  "casks": [
+
+  ],
+  "includes": [
+    "defaults",
+    "dev-defaults"
+  ]
+}
