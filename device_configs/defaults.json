@@ -1,11 +1,11 @@
 {
   "packages": [
+      "asdf",
       "direnv",
       "git",
       "git-crypt",
       "links",
       "mas",
-      "rbenv",
       "telnet",
       "tmux",
       "vim",
