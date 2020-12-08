@@ -1,6 +1,5 @@
 alias bx="bundle exec"
-alias spek="spring rspec"
-alias rakk="spring rake"
+alias spek="bundle exec rspec"
 alias br="bundle exec rails"
 alias cdb="cd $HOME/Code/betterplace/betterplace"
 alias cda="cd $HOME/Code/betterplace/betterplace-provisioning"
