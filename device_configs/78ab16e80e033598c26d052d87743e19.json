@@ -2,7 +2,6 @@
   "name": "Auberon.localhost",
   "munki": "yes",
   "packages": [
-    "jenv",
     "youtube-dl"
   ],
   "casks": [
