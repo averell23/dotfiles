@@ -1,9 +1,7 @@
 {
   "name": "Auberon.localhost",
   "packages": [
-    "go",
     "imagemagick",
-    "libmagic",
-    "node"
+    "libmagic"
   ]
 }

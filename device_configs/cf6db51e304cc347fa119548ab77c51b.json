@@ -5,7 +5,8 @@
   ],
   "casks": [
     "virtualbox",
-    "virtualbox-extension-pack"
+    "virtualbox-extension-pack",
+    "libreoffice"
   ],
   "includes": [
     "defaults",
