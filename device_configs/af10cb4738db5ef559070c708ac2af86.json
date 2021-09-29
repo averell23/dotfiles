@@ -1,0 +1,15 @@
+{
+  "name": "khara",
+  "munki": "yes",
+  "packages": [
+    "youtube-dl"
+  ],
+  "casks": [
+  ],
+  "mas": [
+  ],
+  "includes": [
+    "defaults",
+    "dev_defaults"
+  ]
+}
