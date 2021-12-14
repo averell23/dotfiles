@@ -10,7 +10,7 @@
     "grandperspective",
     "iterm2",
     "postman",
-    "sequel-pro",
+    "sequel-ace",
     "slack",
     "teamviewer",
     "tunnelblick",
@@ -19,7 +19,6 @@
   ],
   "mas": [
     ["Browser Fairy", "id: 483014855"],
-    ["Trello", "id: 1278508951"],
-    ["Wunderlist", "id: 410628904"]
+    ["Trello", "id: 1278508951"]
   ]
 }
