@@ -1,26 +1,34 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Important: 
-"       This requries that you install https://github.com/amix/vimrc !
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
-""""""""""""""""""""""""""""""
-" => Load pathogen paths
-""""""""""""""""""""""""""""""
-call pathogen#infect('~/.dotfiles/vim/vundle')
-call pathogen#infect('~/.dotfiles/vim/default_plugins')
-call pathogen#helptags()
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
-set nocompatible               " be iMproved
-filetype off                   " required!
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+" Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
 
-set rtp+=~/.dotfiles/vim/default_plugins/vundle
-call vundle#rc()
-
-Bundle 'derekwyatt/vim-scala'
-
-Bundle 'bufexplorer.zip'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'jlanzarotta/bufexplorer'
 
 """"""""""""""""""""""""""""""
 " => bufExplorer plugin
@@ -31,9 +39,7 @@ let g:bufExplorerFindActive=1
 let g:bufExplorerSortBy='name'
 map <leader>o :BufExplorer<cr>
 
-
-Bundle 'mru.vim'
-Bundle 'wikipedia.vim'
+Plugin 'yegappan/mru'
 
 """"""""""""""""""""""""""""""
 " => MRU plugin
@@ -41,8 +47,7 @@ Bundle 'wikipedia.vim'
 let MRU_Max_Entries = 400
 map <leader>f :MRU<CR>
 
-
-Bundle 'YankRing.vim'
+Plugin 'vim-scripts/YankRing.vim'
 
 """"""""""""""""""""""""""""""
 " => YankRing
@@ -53,8 +58,7 @@ else
     let g:yankring_history_dir = '~/.dotfiles/vim/temp_dirs/'
 endif
 
-
-Bundle 'ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 """"""""""""""""""""""""""""""
 " => CTRL-P
@@ -71,7 +75,6 @@ map <leader>t :CtrlP<cr>
 
 let g:ctrlp_max_height = 20
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
-
 
 """"""""""""""""""""""""""""""
 " => Peepopen
@@ -93,47 +96,45 @@ let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
 " let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
 " set grepprg=/bin/grep\ -nH
 
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Nerd Tree and Nerd tree tabs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 
 map <leader>nn :NERDTreeTabsToggle<cr>
-map <leader>nb :NERDTreeFromBookmark 
+map <leader>nb :NERDTreeFromBookmark
 map <leader>nf :NERDTreeFind<cr>
 
-Bundle 'rking/ag.vim'
+Plugin 'rking/ag.vim'
 
 " Ack
-noremap <D-F> :Ag 
-      
-Bundle 'amix/open_file_under_cursor.vim'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'tpope/vim-surround'
-" Bundle 'AutoComplPop'
-Bundle 'ervandew/supertab'
+noremap <D-F> :Ag
 
-Bundle 'tpope/vim-fugitive'
+Plugin 'amix/open_file_under_cursor.vim'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'tpope/vim-surround'
+" Bundle 'AutoComplPop'
+Plugin 'ervandew/supertab'
+
+Plugin 'tpope/vim-fugitive'
 map <leader>gst :Gstatus<cr>
-map <leader>gci :Gcommit -m 
-map <leader>gca :Gcommit -ma 
+map <leader>gci :Gcommit -m
+map <leader>gca :Gcommit -ma
 map <leader>gbl :Gblame<cr>
-map <leader>gg :Git 
+map <leader>gg :Git
 map <leader>gpp :Git pp<cr>
 
 " Syntastic
-Bundle 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 let g:synstatic_javascript_checkers = ['jsl']
 map <leader>st :SyntasticCheck<cr>
 
 " Tabular
-Bundle 'godlygeek/tabular'
+Plugin 'godlygeek/tabular'
 
-Bundle 'airblade/vim-gitgutter'
+Plugin 'airblade/vim-gitgutter'
 
 " rspec runner
 " Bundle 'thoughtbot/vim-rspec'
@@ -143,30 +144,46 @@ Bundle 'airblade/vim-gitgutter'
 " map <Leader>sk :call RunCurrentSpecFile()<CR>
 " map <Leader>skk :call RunLastSpec()<CR>
 
-Bundle 'skwp/vim-rspec'
+Plugin 'skwp/vim-rspec'
 
 " Color schemes
-Bundle 'mayansmoke'
+Plugin 'vim-scripts/mayansmoke'
 
 " Global Search&Replace
-Bundle 'greplace.vim'
+Plugin 'vim-scripts/greplace.vim'
 
 " Command-T file open
-Bundle 'wincent/command-t'
+Plugin 'wincent/command-t'
 
 " File type plugins
-Bundle 'vim-coffee-script'
-Bundle 'groenewege/vim-less'
-Bundle 'tpope/vim-markdown'
-Bundle 'tpope/vim-rails'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'tpope/vim-haml'
-Bundle 'slim-template/vim-slim'
-Bundle 'rodjek/vim-puppet'
-Bundle "ekalinin/Dockerfile.vim"
+Plugin 'vim-coffee-script'
+Plugin 'groenewege/vim-less'
+Plugin 'tpope/vim-markdown'
+Plugin 'tpope/vim-rails'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-haml'
+Plugin 'slim-template/vim-slim'
+Plugin 'rodjek/vim-puppet'
+Plugin 'ekalinin/Dockerfile.vim'
 
 " Dash integration (Mac)
-Bundle 'rizzatti/funcoo.vim'
-Bundle 'rizzatti/dash.vim'
+Plugin 'rizzatti/funcoo.vim'
+Plugin 'rizzatti/dash.vim'
 " Reenable the filtype
 filetype on           " Enable filetype detection
+
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
