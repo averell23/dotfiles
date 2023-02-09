@@ -1,6 +1,15 @@
 # shortcut to this dotfiles path is $ZSH
 export DOTFILES=$HOME/.dotfiles
 
+# Setup path for Homebrew
+export ARCH="$(uname -m)"
+if [ $ARCH = "arm64" ]
+then
+  export HOMEBREW_HOME="/opt/homebrew"
+else
+  export HOMEBREW_HOME="$HOMEBREW_HOME"
+fi
+
 setopt extended_glob
 setopt nobeep
 setopt nohistbeep
@@ -98,9 +107,9 @@ fi
 zle -N zle-line-init
 
 # Install fzf completion
-if [[ -d /usr/local/opt/fzf/shell ]]
+if [[ -d $HOMEBREW_HOME/opt/fzf/shell ]]
 then
-  for config_file (/usr/local/opt/fzf/shell/*.zsh) source $config_file
+  for config_file ($HOMEBREW_HOME/opt/fzf/shell/*.zsh) source $config_file
 fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
