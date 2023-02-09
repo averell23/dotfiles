@@ -1,2 +1,2 @@
-export PATH="/usr/local/bin:/usr/local/sbin:$ZSH/bin:$PATH:$DOTFILES/bin"
-export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
+export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$ZSH/bin:$PATH:$DOTFILES/bin"
+export MANPATH="$HOMEBREW_HOME/man:$HOMEBREW_HOME/mysql/man:$HOMEBREW_HOME/git/man:$MANPATH"

@@ -1,13 +1,10 @@
 {
-  "name": "dha.betterplace.dev",
+  "name": "Crimple.local",
   "packages": [
 
   ],
   "casks": [
-    "docker-toolbox",
-    "java",
-    "ssh-tunnel-manager",
-    "virtualbox"
+
   ],
   "includes": [
     "defaults",
