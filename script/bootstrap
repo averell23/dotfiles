@@ -209,7 +209,7 @@ class InstallActions
     run_command 'sudo', 'defaults', 'write', '/Library/Preferences/ManagedInstalls','SoftwareRepoURL', munki_url
     run_command 'sudo', 'defaults', 'write', '/Library/Preferences/ManagedInstalls', 'AdditionalHttpHeaders', '-array', munki_auth
     info "Set munki repo to #{munki_url}"
-    run_command 'sudo', '/usr/local/munki/managedsoftwareupdate', '-v'
+    run_command 'sudo', '$HOMEBREW_HOME/munki/managedsoftwareupdate', '-v'
   end
 
   def secrets_locked?

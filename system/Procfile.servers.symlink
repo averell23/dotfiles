@@ -1,4 +1,4 @@
-mysql: /usr/local/opt/mysql/bin/mysqld --defaults-file=/usr/local/etc/my.cnf
-postgresql: /usr/local/opt/postgresql@10/bin/postgres -D /usr/local/var/postgresql@10
+mysql: $HOMEBREW_HOME/opt/mysql/bin/mysqld --defaults-file=$HOMEBREW_HOME/etc/my.cnf
+postgresql: $HOMEBREW_HOME/opt/postgresql@10/bin/postgres -D $HOMEBREW_HOME/var/postgresql@10
 elasticsearch: elasticsearch
 redis: redis-server

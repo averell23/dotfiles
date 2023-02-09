@@ -5,7 +5,6 @@
     "dash",
     "firefox",
     "fork",
-    "gpg-suite",
     "google-chrome",
     "grandperspective",
     "iterm2",
@@ -18,7 +17,6 @@
     "whatsapp"
   ],
   "mas": [
-    ["Browser Fairy", "id: 483014855"],
     ["Trello", "id: 1278508951"]
   ]
 }
