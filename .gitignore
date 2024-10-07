@@ -11,4 +11,5 @@ vim/temp_dirs
 realpath
 .tags
 Brewfile
+Brewfile.lock.json
 .DS_Store
