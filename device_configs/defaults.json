@@ -2,6 +2,7 @@
   "packages": [
       "asdf",
       "direnv",
+      "fzf",
       "git",
       "git-crypt",
       "links",
