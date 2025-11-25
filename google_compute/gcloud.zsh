@@ -1,5 +1,6 @@
 PREFIX=`brew --prefix`
-if [[ -d "$PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk" ]]; then
-  source "$PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-  source "$PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-fi
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$PREFIX/share/google-cloud-sdk/path.zsh.inc" ]; then . "$PREFIX/share/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$PREFIX/share/google-cloud-sdk/completion.zsh.inc" ]; then . "$PREFIX/share/google-cloud-sdk/completion.zsh.inc"; fi

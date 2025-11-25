@@ -1,0 +1,30 @@
+{
+  "context": {
+    "fileName": [
+      "AGENTS.md",
+      "CONTEXT.md",
+      "GEMINI.md"
+    ]
+  },
+  "general": {
+    "previewFeatures": false,
+    "preferredEditor": "zed"
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "ui": {
+    "theme": "Default Light",
+    "customWittyPhrases": [
+      "Thinking. Please wait...",
+      "Ich denke. Bitte warten...",
+      "考えている。お待ちください…",
+      "Sto pensando. Aspetta..."
+    ]
+  },
+  "tools": {
+    "sandbox": false
+  }
+}

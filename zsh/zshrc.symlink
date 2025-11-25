@@ -10,7 +10,7 @@ else
 fi
 
 # Setup basic paths
-export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$ZSH/bin:$PATH:$DOTFILES/bin"
+export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$ZSH/bin:$PATH:$DOTFILES/bin:/usr/local/cli-plugins"
 export MANPATH="$HOMEBREW_HOME/man:$HOMEBREW_HOME/mysql/man:$HOMEBREW_HOME/git/man:$MANPATH"
 
 setopt extended_glob
@@ -115,4 +115,7 @@ then
   for config_file ($HOMEBREW_HOME/opt/fzf/shell/*.zsh) source $config_file
 fi
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+
+# Created by `pipx` on 2025-07-01 14:38:56
+export PATH="$PATH:/Users/daniel/.local/bin"

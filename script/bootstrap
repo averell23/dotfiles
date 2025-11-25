@@ -42,7 +42,7 @@ class DotfileInstall
   include InstallUtils
 
   def get_mode(file)
-    File.exists?(file) or return :link
+    File.exist?(file) or return :link
     @global_mode and return @global_mode
 
     selection = ''
@@ -133,7 +133,7 @@ class Configuration
 
   def ensure_config
     filename = config_file(device_id)
-    return if File.exists?(filename)
+    return if File.exist?(filename)
     File.open(filename, 'w') do |f|
       f.write(JSON.pretty_generate({
         name: Socket.gethostname.strip,
