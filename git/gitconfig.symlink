@@ -28,11 +28,10 @@
   ci = commit
   br = branch
   cl = clone
-        co = checkout
+  co = checkout
   lg = log
         killorig = clean -f "*.orig *.BACKUP.* *_BACKUP_* *.BASE.* *_BASE_* *.LOCAL.* *_LOCAL_* *.REMOTE.* *_REMOTE_*"
   pp = !"git pull $1 $2 && git push $1 $2"
-        ppp = !"git pull $1 $2 && git push $1 $2 ; localeapp pull"
 
 [github]
   user = averell23
@@ -51,3 +50,5 @@
 	helper = osxkeychain
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
