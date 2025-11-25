@@ -13,10 +13,8 @@
     "slack",
     "teamviewer",
     "tunnelblick",
-    "visual-studio-code",
-    "whatsapp"
+    "zed"
   ],
   "mas": [
-    ["Trello", "id: 1278508951"]
   ]
 }
