@@ -16,6 +16,7 @@
   # CLI packages (migrated from Brewfile)
   # GUI apps (casks) remain in Homebrew for now
   home.packages = with pkgs; [
+    powerline-fonts
     git
     git-crypt
     tmux
