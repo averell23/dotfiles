@@ -4,6 +4,7 @@
   imports = [
     ./modules/git.nix
     ./modules/tmux.nix
+    ./modules/zsh.nix
   ];
   home.username = "daniel";
   home.homeDirectory = "/Users/daniel";
@@ -15,7 +16,6 @@
   # CLI packages (migrated from Brewfile)
   # GUI apps (casks) remain in Homebrew for now
   home.packages = with pkgs; [
-    fzf
     git
     git-crypt
     tmux
