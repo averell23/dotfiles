@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 #
-# Run all dotfiles installers.
+# Run all dotfiles installers. Safe to run at any time to update.
 
 set -e
 
-cd "$(dirname $0)"/..
+cd "$(dirname "$0")"/..
+
+# Apply Home Manager (packages, shell config, vim, git, tmux...)
+echo "› home-manager switch"
+home-manager switch --flake ~/.dotfiles/nix
 
 # Run Homebrew through the Brewfile
 echo "› brew bundle"
 brew bundle
 
-# find the installers and run them iteratively
+# Run any remaining install.sh scripts (legacy)
 find . -name install.sh | while read installer ; do sh -c "${installer}" ; done

@@ -4,6 +4,7 @@
   imports = [
     ./modules/git.nix
     ./modules/tmux.nix
+    ./modules/vim.nix
     ./modules/zsh.nix
   ];
   home.username = "daniel";
@@ -20,7 +21,6 @@
     git
     git-crypt
     tmux
-    vim
     wget
     watch
     pv

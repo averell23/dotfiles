@@ -47,6 +47,9 @@ in
     ];
 
     shellAliases = {
+      # Nix-managed vim (overrides Homebrew's vim so plugins and config are loaded)
+      vim = "$HOME/.nix-profile/bin/vim";
+
       # Shell
       reload = ". ~/.zshrc";
       cdd = "cd ~/Desktop";

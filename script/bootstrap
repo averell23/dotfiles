@@ -2,10 +2,10 @@
 #
 # bootstrap installs things.
 
-require 'digest'
 require 'fileutils'
 require 'io/console'
 require 'json'
+require 'digest'
 require 'socket'
 
 module InstallUtils
@@ -22,7 +22,7 @@ module InstallUtils
   end
 
   def fail(text)
-    puts "\r\033[2K  [ \033[00;32mOK\033[0m ] #{text}\n"
+    puts "\r\033[2K  [\033[0;31mFAIL\033[0m] #{text}\n"
     puts
     exit 1
   end
@@ -181,11 +181,12 @@ end
 class InstallActions
   include InstallUtils
 
-  def setup_powerline_fonts
-    info "Installing powerline fonts"
-    run_command 'git', 'submodule', 'init'
-    run_command 'git', 'submodule', 'update'
-    run_bash "powerline_fonts/install.sh"
+  def check_secrets
+    secret_file = 'system/secret_status.secret.txt'
+    unless File.exist?(secret_file) && File.read(secret_file).strip == 'unlocked'
+      fail "Secrets appear locked. Run: git-crypt unlock /path/to/your-key"
+    end
+    success "Secrets unlocked"
   end
 
   def generate_brewfile(config)
@@ -212,24 +213,21 @@ class InstallActions
     run_command 'sudo', '$HOMEBREW_HOME/munki/managedsoftwareupdate', '-v'
   end
 
-  def secrets_locked?
-    File.read('system/secret_status.secret.txt').strip != 'unlocked'
+  def apply_home_manager
+    info "Applying Home Manager (packages, shell config, vim, git, tmux...)"
+    dotfiles = File.expand_path('~/.dotfiles')
+    run_command 'home-manager', 'switch', '--flake', "#{dotfiles}/nix"
+    success "Home Manager applied"
   end
 
   def run
-    while secrets_locked?
-      info ""
-    end
+    check_secrets
     config = Configuration.load
     generate_brewfile(config)
-    setup_powerline_fonts if config.macOS?
     DotfileInstall.run
+    apply_home_manager
     setup_munki if config.munki?
-    run_command 'bin/dot'
-    run_command 'vim', '+quall'
-    run_command 'git', 'clone', 'https://github.com/VundleVim/Vundle.vim.git', '~/.vim/bundle/Vundle.vim'
-    run_command 'vim', '+BundleInstall', '+qall'
-    success "Installation complete"
+    success "Bootstrap complete"
   end
 
   def self.run ; new.run ;end
