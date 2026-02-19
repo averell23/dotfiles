@@ -1,20 +1,10 @@
 {
   "packages": [
       "asdf",
-      "direnv",
-      "fzf",
-      "git",
-      "git-crypt",
       "links",
       "markdown",
       "mas",
-      "telnet",
-      "tmux",
-      "vim",
-      "watch",
-      "wget",
-      "zsh",
-      "pv"
+      "zsh"
   ],
   "casks": [
   ]
