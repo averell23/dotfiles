@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./modules/git.nix
+    ./modules/tmux.nix
+  ];
   home.username = "daniel";
   home.homeDirectory = "/Users/daniel";
 
@@ -11,7 +15,6 @@
   # CLI packages (migrated from Brewfile)
   # GUI apps (casks) remain in Homebrew for now
   home.packages = with pkgs; [
-    direnv
     fzf
     git
     git-crypt
@@ -24,6 +27,13 @@
     file        # provides libmagic / the `file` command
     inetutils   # provides telnet
   ];
+
+  # Direnv: auto-load .envrc files per directory
+  # nix-direnv caches Nix dev shells so re-entering is instant
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
