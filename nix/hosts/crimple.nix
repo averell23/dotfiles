@@ -1,4 +1,19 @@
-# Crimple-specific Home Manager configuration
+# Crimple-specific configuration
 { ... }: {
-  # Machine-specific overrides go here
+  homebrew.casks = [
+    "1password"
+    "cyberduck"
+    "dash"
+    "firefox"
+    "fork"
+    "google-chrome"
+    "grandperspective"
+    "iterm2"
+    "postman"
+    "sequel-ace"
+    "slack"
+    "teamviewer"
+    "tunnelblick"
+    "zed"
+  ];
 }

@@ -103,11 +103,17 @@ class InstallActions
     `hostname -s`.strip
   end
 
-  def apply_home_manager
-    info "Applying Home Manager for #{hostname}..."
+  def apply_darwin
     dotfiles = File.expand_path('~/.dotfiles')
-    run_command 'home-manager', 'switch', '--flake', "#{dotfiles}/nix#daniel@#{hostname}"
-    success "Home Manager applied"
+    flake    = "#{dotfiles}/nix##{hostname}"
+    if system('which darwin-rebuild > /dev/null 2>&1')
+      info "Applying nix-darwin for #{hostname}..."
+      run_command 'darwin-rebuild', 'switch', '--flake', flake
+    else
+      info "Installing nix-darwin for #{hostname} (first run)..."
+      run_command 'nix', 'run', 'nix-darwin', '--', 'switch', '--flake', flake
+    end
+    success "nix-darwin applied"
   end
 
   def run

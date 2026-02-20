@@ -8,11 +8,8 @@ cd "$(dirname "$0")"/..
 
 HOSTNAME=$(hostname -s)
 
-echo "› home-manager switch"
-home-manager switch --flake ~/.dotfiles/nix#daniel@${HOSTNAME}
-
-echo "› brew bundle"
-brew bundle --file "homebrew/Brewfile.${HOSTNAME}"
+echo "› darwin-rebuild switch"
+darwin-rebuild switch --flake ~/.dotfiles/nix#${HOSTNAME}
 
 # Run any remaining install.sh scripts (legacy)
 find . -name install.sh | while read installer ; do sh -c "${installer}" ; done
