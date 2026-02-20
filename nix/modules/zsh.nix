@@ -156,7 +156,6 @@ in
       # Load custom functions from dotfiles
       fpath=($DOTFILES/zsh/functions $fpath)
       autoload -Uz $DOTFILES/zsh/functions/*(.:t)
-      zle -N newtab
 
       # GNU ls aliases (requires Homebrew coreutils)
       if command -v gls &>/dev/null; then
