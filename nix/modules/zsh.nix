@@ -93,6 +93,12 @@ in
 
       # Kubernetes
       kubs = "kubectl --kubeconfig=$HOME/.kube/betterplace-staging";
+
+      # Script shortcuts (scripts-to-rule-them-all pattern)
+      con = "script/console";
+      shell = "script/shell";
+      boot = "script/bootstrap";
+      serv = "script/server";
     };
 
     sessionVariables = {
@@ -104,6 +110,7 @@ in
       DISPLAY = ":0";
       GOPATH = "$HOME/Code/go";
       HOMEBREW_AUTO_UPDATE_SECS = "259200";
+      GITHUB_ACCOUNT = "averell23";
     };
 
     # All initContent runs after oh-my-zsh in the generated .zshrc.
@@ -157,6 +164,14 @@ in
         alias l="gls -lAh --color"
         alias ll="gls -l --color"
         alias la="gls -A --color"
+      fi
+
+      # Google Cloud SDK (installed via Homebrew)
+      if [ -f "$HOMEBREW_HOME/share/google-cloud-sdk/path.zsh.inc" ]; then
+        source "$HOMEBREW_HOME/share/google-cloud-sdk/path.zsh.inc"
+      fi
+      if [ -f "$HOMEBREW_HOME/share/google-cloud-sdk/completion.zsh.inc" ]; then
+        source "$HOMEBREW_HOME/share/google-cloud-sdk/completion.zsh.inc"
       fi
 
       # Git prompt helper functions (used by the averell theme)
