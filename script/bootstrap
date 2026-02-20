@@ -98,7 +98,6 @@ class Configuration
     File.join('.', 'device_configs')
   end
 
-  def munki? ; %w(yes enable on).include?(@data['munki']) ;end
   def os_name ; @os_name ||= `uname -s`.strip ; end
   def macOS? ; os_name == 'Darwin' ; end
 
@@ -203,16 +202,6 @@ class InstallActions
     info "Generated Brewfile"
   end
 
-  def setup_munki
-    run_command 'brew', 'cask', 'install', 'munki'
-    munki_url = File.read('munki/munki_url.secret.txt').strip
-    munki_auth = File.read('munki/munki_auth.secret.txt').strip
-    run_command 'sudo', 'defaults', 'write', '/Library/Preferences/ManagedInstalls','SoftwareRepoURL', munki_url
-    run_command 'sudo', 'defaults', 'write', '/Library/Preferences/ManagedInstalls', 'AdditionalHttpHeaders', '-array', munki_auth
-    info "Set munki repo to #{munki_url}"
-    run_command 'sudo', '$HOMEBREW_HOME/munki/managedsoftwareupdate', '-v'
-  end
-
   def apply_home_manager
     info "Applying Home Manager (packages, shell config, vim, git, tmux...)"
     dotfiles = File.expand_path('~/.dotfiles')
@@ -226,7 +215,6 @@ class InstallActions
     generate_brewfile(config)
     DotfileInstall.run
     apply_home_manager
-    setup_munki if config.munki?
     success "Bootstrap complete"
   end
 
