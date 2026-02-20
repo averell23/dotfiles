@@ -36,6 +36,14 @@
     nix-direnv.enable = true;
   };
 
+  # Dotfile configs managed by Home Manager
+  home.file = {
+    ".ackrc".source                  = ../ack/ackrc;
+    ".gemrc".source                  = ../ruby/gemrc;
+    ".irbrc".source                  = ../ruby/irbrc;
+    ".gemini/settings.json".source   = ../gemini/gemini/settings.json;
+  };
+
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
 }
