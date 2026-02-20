@@ -1,6 +1,5 @@
 {
   "name": "khara",
-  "munki": "yes",
   "packages": [
     "youtube-dl"
   ],
