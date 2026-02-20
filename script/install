@@ -6,13 +6,13 @@ set -e
 
 cd "$(dirname "$0")"/..
 
-# Apply Home Manager (packages, shell config, vim, git, tmux...)
-echo "› home-manager switch"
-home-manager switch --flake ~/.dotfiles/nix
+HOSTNAME=$(hostname -s)
 
-# Run Homebrew through the Brewfile
+echo "› home-manager switch"
+home-manager switch --flake ~/.dotfiles/nix#daniel@${HOSTNAME}
+
 echo "› brew bundle"
-brew bundle
+brew bundle --file "homebrew/Brewfile.${HOSTNAME}"
 
 # Run any remaining install.sh scripts (legacy)
 find . -name install.sh | while read installer ; do sh -c "${installer}" ; done
