@@ -14,4 +14,3 @@ Brewfile.lock.json
 .DS_Store
 .claude/
 nix/result
-~/
