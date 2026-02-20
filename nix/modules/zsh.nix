@@ -177,7 +177,6 @@ in
       source $DOTFILES/git/prompt.zsh
 
       # iTerm2 shell integration
-      source $DOTFILES/iterm/startup.zsh
       test -e ~/.iterm2_shell_integration.zsh && source ~/.iterm2_shell_integration.zsh
 
       # SSH helpers
