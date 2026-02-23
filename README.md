@@ -267,6 +267,3 @@ Files ending in `.secret.zsh`, `.secret.symlink`, or `.secret.txt` are encrypted
 
 ---
 
-## What's next
-
-- **agenix** — replace git-crypt for Nix-native secret management
