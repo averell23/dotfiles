@@ -15,23 +15,29 @@
 
   outputs = { nixpkgs, nix-darwin, home-manager, ... }:
     let
-      mkDarwin = system: hostModules:
+      # profiles/defaults.nix is always included; pass additional profiles per machine.
+      mkDarwin = system: profiles:
         nix-darwin.lib.darwinSystem {
           inherit system;
           modules = [
-            ./darwin.nix
+            ./profiles/defaults.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs   = true;
               home-manager.useUserPackages = true;
               home-manager.users.daniel    = import ./home.nix;
             }
-          ] ++ hostModules;
+          ] ++ profiles;
         };
     in {
       darwinConfigurations = {
-        "Crimple" = mkDarwin "aarch64-darwin" [ ./hosts/crimple.nix ];
-        "khara"   = mkDarwin "aarch64-darwin" [ ./hosts/khara.nix ];
+        "Crimple" = mkDarwin "aarch64-darwin" [
+          ./profiles/work.nix
+          ./profiles/personal.nix
+        ];
+        "khara" = mkDarwin "aarch64-darwin" [
+          ./hosts/khara.nix
+        ];
       };
     };
 }
