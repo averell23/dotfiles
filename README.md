@@ -31,7 +31,7 @@ Anything in `bin/` is added to `$PATH` and available everywhere.
 The primary system. nix-darwin manages:
 
 - macOS system defaults (dock, Finder, NSGlobalDomain)
-- Homebrew (brews and per-host casks) — installed and removed declaratively on every switch
+- Homebrew (brews and casks) — installed and removed declaratively on every switch
 - Home Manager, embedded as a nix-darwin module
 
 Applying any change means editing a `.nix` file and running:
@@ -46,48 +46,61 @@ Every switch creates a new **generation** — a complete, named snapshot of the 
 
 ```
 nix/
-├── flake.nix          # entry point; defines darwinConfigurations per host
-├── flake.lock         # pinned input versions (nixpkgs, nix-darwin, home-manager)
-├── darwin.nix         # shared macOS system config (all hosts)
-├── home.nix           # shared Home Manager config (packages, direnv, home.file)
+├── flake.nix              # entry point; assigns profiles to each machine
+├── flake.lock             # pinned input versions (nixpkgs, nix-darwin, home-manager)
+├── home.nix               # shared Home Manager config (packages, direnv, home.file)
+├── profiles/
+│   ├── defaults.nix       # always applied — system settings, macOS defaults, core brews
+│   ├── work.nix           # work casks (Slack, Postman, Sequel Ace, Tunnelblick…)
+│   └── personal.nix       # personal casks (1Password, Cyberduck, Firefox…)
+├── hosts/
+│   └── khara.nix          # machine-specific overrides (no profiles apply here)
 └── modules/
-    ├── git.nix        # programs.git → ~/.config/git/config
-    ├── tmux.nix       # programs.tmux → ~/.config/tmux/tmux.conf
-    ├── vim.nix        # programs.vim → ~/.vimrc
-    └── zsh.nix        # programs.zsh → ~/.zshrc, ~/.zshenv
+    ├── git.nix            # programs.git → ~/.config/git/config
+    ├── tmux.nix           # programs.tmux → ~/.config/tmux/tmux.conf
+    ├── vim.nix            # programs.vim → ~/.vimrc
+    └── zsh.nix            # programs.zsh → ~/.zshrc, ~/.zshenv
 ```
 
-**Per-host config** lives in `nix/hosts/<hostname>.nix`. Each host gets its own cask list, and any packages that only make sense on one machine.
+**Profiles** are composable modules. Each machine in `flake.nix` lists whichever profiles apply to it — Homebrew cask lists and Home Manager packages from all selected profiles are merged automatically:
+
+```nix
+"Crimple" = mkDarwin "aarch64-darwin" [ ./profiles/work.nix ./profiles/personal.nix ];
+"khara"   = mkDarwin "aarch64-darwin" [ ./hosts/khara.nix ];
+```
+
+`profiles/defaults.nix` is always included by `mkDarwin` and never needs to be listed explicitly.
 
 **What nix-darwin/Home Manager currently manages:**
 
 | Area | Where |
 |---|---|
-| macOS system defaults | `nix/darwin.nix` → applied at activation |
-| Homebrew brews (all hosts) | `nix/darwin.nix` → `homebrew.brews` |
-| Homebrew casks (per host) | `nix/hosts/<hostname>.nix` → `homebrew.casks` |
-| Git config | `nix/modules/git.nix` → `~/.config/git/config` |
-| Tmux config | `nix/modules/tmux.nix` → `~/.config/tmux/tmux.conf` |
-| Vim config | `nix/modules/vim.nix` → `~/.vimrc` |
-| Zsh config, aliases, plugins | `nix/modules/zsh.nix` → `~/.zshrc`, `~/.zshenv` |
-| Direnv + nix-direnv | `nix/home.nix` → shell hook via `.zshrc` |
-| CLI packages | `nix/home.nix` → `home.packages` |
-| `.gemrc`, `.irbrc` | `nix/home.nix` → `home.file` |
+| macOS system defaults | `profiles/defaults.nix` → applied at activation |
+| Homebrew brews (all machines) | `profiles/defaults.nix` → `homebrew.brews` |
+| Homebrew casks (work) | `profiles/work.nix` → `homebrew.casks` |
+| Homebrew casks (personal) | `profiles/personal.nix` → `homebrew.casks` |
+| Git config | `modules/git.nix` → `~/.config/git/config` |
+| Tmux config | `modules/tmux.nix` → `~/.config/tmux/tmux.conf` |
+| Vim config | `modules/vim.nix` → `~/.vimrc` |
+| Zsh config, aliases, plugins | `modules/zsh.nix` → `~/.zshrc`, `~/.zshenv` |
+| Direnv + nix-direnv | `home.nix` → shell hook via `.zshrc` |
+| CLI packages | `home.nix` → `home.packages` |
+| `.gemrc`, `.irbrc` | `home.nix` → `home.file` |
 
 ### Legacy symlinks
 
 A small set of files are still managed by `script/bootstrap`. These are secrets or files with no clear benefit from a Nix module:
 
 ```
-asdf/tool-versions.symlink       → ~/.tool-versions
-gnupg/gnupg/gpg-agent.conf.symlink    → ~/.gnupg/gpg-agent.conf
-gnupg/gnupg/gpg.conf.symlink          → ~/.gnupg/gpg.conf
-gnupg/gnupg/openpgp-revocs.d.secret.symlink  → ~/.gnupg/openpgp-revocs.d
-gnupg/gnupg/pubring.gpg.secret.symlink       → ~/.gnupg/pubring.gpg
-ssh/ssh/config.secret.symlink    → ~/.ssh/config
-ssh/ssh/id_rsa.pub.symlink       → ~/.ssh/id_rsa.pub
-ssh/ssh/id_rsa.secret.symlink    → ~/.ssh/id_rsa
-zed/config/zed/settings.secret.json.symlink  → ~/.config/zed/settings.json
+asdf/tool-versions.symlink                   → ~/.tool-versions
+gnupg/gnupg/gpg-agent.conf.symlink          → ~/.gnupg/gpg-agent.conf
+gnupg/gnupg/gpg.conf.symlink                → ~/.gnupg/gpg.conf
+gnupg/gnupg/openpgp-revocs.d.secret.symlink → ~/.gnupg/openpgp-revocs.d
+gnupg/gnupg/pubring.gpg.secret.symlink      → ~/.gnupg/pubring.gpg
+ssh/ssh/config.secret.symlink               → ~/.ssh/config
+ssh/ssh/id_rsa.pub.symlink                  → ~/.ssh/id_rsa.pub
+ssh/ssh/id_rsa.secret.symlink               → ~/.ssh/id_rsa
+zed/config/zed/settings.secret.json.symlink → ~/.config/zed/settings.json
 ```
 
 Files ending in `.secret.*` are encrypted with git-crypt and require unlocking before they can be used.
@@ -141,7 +154,15 @@ nix run nix-darwin -- switch --flake ~/.dotfiles/nix#$(hostname -s)
 
 This installs all packages, applies macOS defaults, installs Homebrew casks, and activates Home Manager.
 
-### 6. Set login shell
+### 6. Add the new machine to flake.nix
+
+Edit `nix/flake.nix` and add an entry under `darwinConfigurations` with the hostname and whichever profiles apply:
+
+```nix
+"MyMachine" = mkDarwin "aarch64-darwin" [ ./profiles/work.nix ./profiles/personal.nix ];
+```
+
+### 7. Set login shell
 
 ```bash
 chsh -s /bin/zsh
@@ -169,7 +190,9 @@ Edit `nix/home.nix` → `home.packages`. Then apply.
 
 ### Adding a Homebrew cask
 
-Edit `nix/hosts/<hostname>.nix` → `homebrew.casks`. Then apply. nix-darwin will install new casks and remove any that were deleted from the list.
+Add it to the appropriate profile — `profiles/work.nix` or `profiles/personal.nix` — then apply. nix-darwin will install new casks and remove any that were deleted from the list, including GUI apps.
+
+> **Warning:** Do not install things with `brew install` or download GUI apps via Homebrew manually. Anything not declared in the config will be uninstalled on the next `darwin-rebuild switch`. Add it to a profile first.
 
 ### Adding a shell alias or environment variable
 
@@ -181,7 +204,7 @@ Nix pins exact versions of all packages via `nix/flake.lock`. To pull in newer v
 
 ```bash
 cd ~/.dotfiles/nix
-nix flake update                    # rewrites flake.lock with latest inputs
+nix flake update                         # rewrites flake.lock with latest inputs
 darwin-rebuild switch --flake .#$(hostname -s)
 git add flake.lock
 git commit -m "Update nix flake inputs"
@@ -192,8 +215,8 @@ git commit -m "Update nix flake inputs"
 Every `darwin-rebuild switch` creates a numbered generation:
 
 ```bash
-darwin-rebuild --list-generations   # list all generations
-darwin-rebuild switch --rollback    # revert to previous generation
+darwin-rebuild --list-generations        # list all generations
+darwin-rebuild switch --rollback         # revert to previous generation
 ```
 
 ### Uninstalling Nix entirely
@@ -220,11 +243,23 @@ For per-repository settings, use `git config --local` — that writes to `.git/c
 
 ### Homebrew is declarative
 
-nix-darwin controls Homebrew. On each `darwin-rebuild switch`, it:
-- Installs any brews/casks listed in the config
-- **Removes** any brews/casks that are no longer listed (`cleanup = "uninstall"`)
+nix-darwin controls Homebrew. On each `darwin-rebuild switch`, it installs anything newly listed and **uninstalls anything no longer listed** — this applies to both CLI tools (brews) and GUI apps (casks). Do not install things manually with `brew install`; add them to a profile first.
 
-Do not install things with `brew install` directly — they will be removed on the next switch. Add them to `darwin.nix` or the relevant host file instead.
+The one exception: casks you installed yourself before nix-darwin took over may not be tracked by it and could be left alone. But anything installed after nix-darwin, or by nix-darwin itself, will be removed if dropped from the config.
+
+### ASDF and Nix dev shells coexist
+
+Both are installed and work independently, managed per project via direnv:
+
+| Project `.envrc` | Active environment |
+|---|---|
+| `use flake` | Nix dev shell — tools from `flake.nix` take priority |
+| `use asdf` | ASDF — `.tool-versions` determines versions |
+| *(none)* | Global shell: ASDF shims take priority over Nix packages |
+
+The global PATH order (outside any project) is: ASDF shims → Homebrew → Nix packages. This means ASDF wins for language runtimes globally, but a `use flake` project overrides that within its directory.
+
+Practical rule: use ASDF for work projects where teammates rely on `.tool-versions`; use Nix dev shells for personal projects or any project you control entirely. Don't put language runtimes in `home.packages` — they'd be shadowed by ASDF shims anyway.
 
 ### Secrets
 
@@ -234,5 +269,4 @@ Files ending in `.secret.zsh`, `.secret.symlink`, or `.secret.txt` are encrypted
 
 ## What's next
 
-- **asdf → per-project flakes** — replace `~/.tool-versions` with per-project `flake.nix` + direnv
 - **agenix** — replace git-crypt for Nix-native secret management
