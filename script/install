@@ -9,7 +9,7 @@ cd "$(dirname "$0")"/..
 HOSTNAME=$(scutil --get LocalHostName)
 
 echo "› darwin-rebuild switch"
-darwin-rebuild switch --flake ~/.dotfiles/nix#${HOSTNAME}
+sudo darwin-rebuild switch --flake /Users/daniel/.dotfiles/nix#${HOSTNAME}
 
 # Run any remaining install.sh scripts (legacy)
 find . -name install.sh | while read installer ; do sh -c "${installer}" ; done

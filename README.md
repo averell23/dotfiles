@@ -37,7 +37,7 @@ The primary system. nix-darwin manages:
 Applying any change means editing a `.nix` file and running:
 
 ```bash
-darwin-rebuild switch --flake ~/.dotfiles/nix#$(hostname -s)
+sudo darwin-rebuild switch --flake /Users/daniel/.dotfiles/nix#$(scutil --get LocalHostName)
 ```
 
 Every switch creates a new **generation** — a complete, named snapshot of the environment. Every package is pinned to the exact commit in `nix/flake.lock`.
@@ -65,7 +65,7 @@ nix/
 **Profiles** are composable modules. Each machine in `flake.nix` lists whichever profiles apply to it — Homebrew cask lists and Home Manager packages from all selected profiles are merged automatically:
 
 ```nix
-"Crimple" = mkDarwin "aarch64-darwin" [ ./profiles/work.nix ./profiles/personal.nix ];
+"gut-201" = mkDarwin "aarch64-darwin" [ ./profiles/work.nix ./profiles/personal.nix ];
 "khara"   = mkDarwin "aarch64-darwin" [ ./hosts/khara.nix ];
 ```
 
@@ -149,7 +149,7 @@ script/bootstrap
 Creates the `*.symlink` symlinks in `$HOME` and then applies nix-darwin for the first time. On the first run, `darwin-rebuild` isn't installed yet, so it bootstraps via:
 
 ```bash
-nix run nix-darwin -- switch --flake ~/.dotfiles/nix#$(hostname -s)
+sudo nix run nix-darwin -- switch --flake /Users/daniel/.dotfiles/nix#$(scutil --get LocalHostName)
 ```
 
 This installs all packages, applies macOS defaults, installs Homebrew casks, and activates Home Manager.
@@ -179,14 +179,30 @@ nix-darwin registers `/bin/zsh` in `/etc/shells`. Log out and back in for the ch
 After editing any `.nix` file:
 
 ```bash
-darwin-rebuild switch --flake ~/.dotfiles/nix#$(hostname -s)
+sudo darwin-rebuild switch --flake /Users/daniel/.dotfiles/nix#$(scutil --get LocalHostName)
 # or use the convenience script:
 script/install
 ```
 
 ### Adding a package
 
-Edit `nix/home.nix` → `home.packages`. Then apply.
+Search for available packages:
+
+```bash
+nix search nixpkgs <name>
+```
+
+Or browse the web at [search.nixos.org/packages](https://search.nixos.org/packages) — select the **unstable** channel to match what the flake uses.
+
+Then add to the appropriate place:
+
+| Scope | File | Key |
+|---|---|---|
+| All machines (CLI tool) | `nix/home.nix` | `home.packages` |
+| Work machines only | `nix/profiles/work.nix` | `home-manager.users.daniel.home.packages` |
+| Personal machines only | `nix/profiles/personal.nix` | `home-manager.users.daniel.home.packages` |
+
+Then apply.
 
 ### Adding a Homebrew cask
 
@@ -205,7 +221,7 @@ Nix pins exact versions of all packages via `nix/flake.lock`. To pull in newer v
 ```bash
 cd ~/.dotfiles/nix
 nix flake update                         # rewrites flake.lock with latest inputs
-darwin-rebuild switch --flake .#$(hostname -s)
+sudo darwin-rebuild switch --flake /Users/daniel/.dotfiles/nix#$(scutil --get LocalHostName)
 git add flake.lock
 git commit -m "Update nix flake inputs"
 ```
@@ -266,4 +282,3 @@ Practical rule: use ASDF for work projects where teammates rely on `.tool-versio
 Files ending in `.secret.zsh`, `.secret.symlink`, or `.secret.txt` are encrypted with [git-crypt](https://github.com/AGWA/git-crypt) and committed to the repo. They are transparent to normal git operations once unlocked.
 
 ---
-
