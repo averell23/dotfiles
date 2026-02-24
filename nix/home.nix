@@ -18,7 +18,7 @@
   # GUI apps (casks) remain in Homebrew for now
   home.packages = with pkgs; [
     links2    # text-mode web browser (was: Homebrew links)
-    markdown  # Markdown-to-HTML CLI (was: Homebrew markdown)
+    discount  # Markdown-to-HTML CLI, provides `markdown` command (was: Homebrew markdown)
     mas       # Mac App Store CLI (was: Homebrew mas)
     powerline-fonts
     git
