@@ -23,7 +23,7 @@
       upgrade    = false;
       cleanup    = "uninstall"; # remove formulae/casks no longer listed
     };
-    taps  = [ "homebrew/cask-versions" ];
+    taps  = [];
     brews = [ "asdf" "links" "markdown" "mas" ];
   };
 
