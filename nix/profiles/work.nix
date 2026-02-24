@@ -2,14 +2,18 @@
 { ... }: {
   homebrew.casks = [
     "dash"         # documentation browser
-    "fork"         # git client
-    "google-chrome"
-    "iterm2"
+    "docker-desktop"
+    "google-drive"
+    "claude"
+    "claude-code"
+    "gcloud-cli"
     "postman"      # API testing
     "sequel-ace"   # database client
+    "signal"
     "slack"
-    "teamviewer"
+    "thunderbird"
     "tunnelblick"  # VPN
-    "zed"
+    "visual-studio-code"
+    "zen"
   ];
 }
