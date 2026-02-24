@@ -194,21 +194,18 @@ nix search nixpkgs <name>
 
 Or browse the web at [search.nixos.org/packages](https://search.nixos.org/packages) — select the **unstable** channel to match what the flake uses.
 
-Then add to the appropriate place:
+Then add to the appropriate place and apply:
 
-| Scope | File | Key |
-|---|---|---|
-| All machines (CLI tool) | `nix/home.nix` | `home.packages` |
-| Work machines only | `nix/profiles/work.nix` | `home-manager.users.daniel.home.packages` |
-| Personal machines only | `nix/profiles/personal.nix` | `home-manager.users.daniel.home.packages` |
+| Tool type | Scope | File | Key |
+|---|---|---|---|
+| CLI package | All machines | `nix/home.nix` | `home.packages` |
+| CLI package | Work only | `nix/profiles/work.nix` | `home-manager.users.daniel.home.packages` |
+| CLI package | Personal only | `nix/profiles/personal.nix` | `home-manager.users.daniel.home.packages` |
+| GUI app (cask) | Work only | `nix/profiles/work.nix` | `homebrew.casks` |
+| GUI app (cask) | Personal only | `nix/profiles/personal.nix` | `homebrew.casks` |
+| Homebrew formula | All machines | `nix/profiles/defaults.nix` | `homebrew.brews` |
 
-Then apply.
-
-### Adding a Homebrew cask
-
-Add it to the appropriate profile — `profiles/work.nix` or `profiles/personal.nix` — then apply. nix-darwin will install new casks and remove any that were deleted from the list, including GUI apps.
-
-> **Warning:** Do not install things with `brew install` or download GUI apps via Homebrew manually. Anything not declared in the config will be uninstalled on the next `darwin-rebuild switch`. Add it to a profile first.
+> **Warning:** Do not install things with `brew install` or download GUI apps via Homebrew manually. Anything not declared in the config will be uninstalled on the next `darwin-rebuild switch`. Add it to the config first.
 
 ### Adding a shell alias or environment variable
 
