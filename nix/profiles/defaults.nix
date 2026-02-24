@@ -12,7 +12,7 @@
   programs.zsh.enable = true;
 
   # Enable Touch ID for sudo authentication
-  security.pam.services.sudo.touchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   # Determinate Nix manages the Nix installation itself; disable nix-darwin's
   # built-in Nix management to avoid conflicts. Flakes are enabled by Determinate.
