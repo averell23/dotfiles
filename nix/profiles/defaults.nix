@@ -11,8 +11,9 @@
   # Register /bin/zsh in /etc/shells so chsh works without sudo
   programs.zsh.enable = true;
 
-  # Enable flakes (persists across nix upgrades)
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # Determinate Nix manages the Nix installation itself; disable nix-darwin's
+  # built-in Nix management to avoid conflicts. Flakes are enabled by Determinate.
+  nix.enable = false;
 
   # Homebrew: brews common to all machines; casks declared per-host
   homebrew = {
