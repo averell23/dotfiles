@@ -31,11 +31,11 @@
         };
     in {
       darwinConfigurations = {
-        "Crimple" = mkDarwin "aarch64-darwin" [
+        "GUT-201" = mkDarwin "aarch64-darwin" [
           ./profiles/work.nix
-          ./profiles/personal.nix
         ];
         "khara" = mkDarwin "aarch64-darwin" [
+          ./profiles/personal.nix
           ./hosts/khara.nix
         ];
       };

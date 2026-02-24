@@ -1,9 +1,17 @@
 # Personal profile: tools and casks for personal use
 { ... }: {
   homebrew.casks = [
-    "1password"
+    "balenaetcher"
+    "claude"
     "cyberduck"    # file transfer
-    "firefox"
+    "exactscan"
+    "gramps"
+    "signal"
+    "teamviewer"
+    "telegram"
     "grandperspective" # disk usage
+    "vlc"
+    "whatsapp"
+    "zoom"
   ];
 }
