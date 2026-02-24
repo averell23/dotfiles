@@ -29,6 +29,11 @@
       # The Homebrew install sets up shims and shell integration cleanly;
       # the Nix package does not replicate this out of the box.
       "asdf"
+      # gmp, libyaml: build dependencies for ASDF-managed Ruby. Nix home.packages
+      # does not expose headers to the compiler, so these must live in Homebrew
+      # where ruby-build can find them.
+      "gmp"
+      "libyaml"
     ];
     casks = [
       "1password"
