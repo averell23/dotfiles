@@ -19,7 +19,7 @@
         co = "checkout";
         lg = "log";
         killorig = ''clean -f "*.orig *.BACKUP.* *_BACKUP_* *.BASE.* *_BASE_* *.LOCAL.* *_LOCAL_* *.REMOTE.* *_REMOTE_*"'';
-        pp = ''!"git pull $1 $2 && git push $1 $2"'';
+        pp = ''!git pull $1 $2 && git push $1 $2'';
       };
 
       merge.tool = "opendiff";
