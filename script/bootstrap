@@ -105,13 +105,16 @@ class InstallActions
 
   def apply_darwin
     dotfiles = File.expand_path('~/.dotfiles')
-    flake    = "#{dotfiles}/nix##{hostname}"
+    flake    = "#{dotfiles}/nix"  # absolute path; nix-darwin escalates to root internally
+    target   = "#{flake}##{hostname}"
     if system('which darwin-rebuild > /dev/null 2>&1')
       info "Applying nix-darwin for #{hostname}..."
-      run_command 'darwin-rebuild', 'switch', '--flake', flake
+      run_command 'darwin-rebuild', 'switch', '--flake', target
     else
       info "Installing nix-darwin for #{hostname} (first run)..."
-      run_command 'nix', 'run', 'nix-darwin', '--', 'switch', '--flake', flake
+      Dir.chdir(flake) do
+        run_command 'nix', 'run', 'nix-darwin', '--', 'switch', '--flake', ".##{hostname}"
+      end
     end
     success "nix-darwin applied"
   end
