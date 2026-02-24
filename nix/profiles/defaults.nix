@@ -24,7 +24,22 @@
       cleanup    = "uninstall"; # remove formulae/casks no longer listed
     };
     taps  = [];
-    brews = [ "asdf" "links" "markdown" "mas" ];
+    brews = [
+      # asdf: manages language runtime versions via shims on PATH.
+      # The Homebrew install sets up shims and shell integration cleanly;
+      # the Nix package does not replicate this out of the box.
+      "asdf"
+    ];
+    casks = [
+      "1password"
+      "firefox"
+      "fork"         # git client
+      "google-chrome"
+      "iterm2"
+      "obsidian"
+      "zed"
+      "zotero"
+    ];
   };
 
   # macOS system defaults (migrated from macos/set-defaults.sh)
