@@ -6,7 +6,7 @@ set -e
 
 cd "$(dirname "$0")"/..
 
-HOSTNAME=$(hostname -s)
+HOSTNAME=$(scutil --get LocalHostName)
 
 echo "› darwin-rebuild switch"
 darwin-rebuild switch --flake ~/.dotfiles/nix#${HOSTNAME}

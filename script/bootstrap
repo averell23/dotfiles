@@ -100,7 +100,7 @@ class InstallActions
   end
 
   def hostname
-    `hostname -s`.strip
+    `scutil --get LocalHostName`.strip
   end
 
   def apply_darwin
@@ -119,7 +119,7 @@ class InstallActions
   def run
     check_secrets
     DotfileInstall.run
-    apply_home_manager
+    apply_darwin
     success "Bootstrap complete"
   end
 
