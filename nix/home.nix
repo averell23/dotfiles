@@ -17,9 +17,17 @@
   # CLI packages (migrated from Brewfile)
   # GUI apps (casks) remain in Homebrew for now
   home.packages = with pkgs; [
+    links2    # text-mode web browser (was: Homebrew links)
+    markdown  # Markdown-to-HTML CLI (was: Homebrew markdown)
+    mas       # Mac App Store CLI (was: Homebrew mas)
     powerline-fonts
     git
     git-crypt
+    gnupg
+    imagemagick
+    k6
+    readline
+    sqlite
     tmux
     wget
     watch
@@ -27,6 +35,7 @@
     imagemagick
     file        # provides libmagic / the `file` command
     inetutils   # provides telnet
+    yt-dlp
   ];
 
   # Direnv: auto-load .envrc files per directory
