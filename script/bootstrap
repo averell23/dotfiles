@@ -1,132 +1,99 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env bash
 #
-# bootstrap installs things.
+# bootstrap installs things. Safe to run on a fresh machine.
 
-require 'fileutils'
-require 'io/console'
+set -euo pipefail
 
-module InstallUtils
-  def info(text)
-    puts "\r  [ \033[00;34m..\033[0m ] #{text.strip}\n"
-  end
+DOTFILES="$(cd "$(dirname "$0")"/.. && pwd)"
+cd "$DOTFILES"
 
-  def user(text)
-    puts "\r  [ \033[00;33m..\033[0m ] #{text}\n"
-  end
+GLOBAL_MODE=""
 
-  def success(text)
-    puts "\r\033[2K  [ \033[00;32mOK\033[0m ] #{text}\n"
-  end
+info()    { printf "  [ \033[00;34m..\033[0m ] %s\n" "$*"; }
+success() { printf "  [ \033[00;32mOK\033[0m ] %s\n" "$*"; }
+fail()    { printf "  [\033[0;31mFAIL\033[0m] %s\n" "$*" >&2; exit 1; }
 
-  def fail(text)
-    puts "\r\033[2K  [\033[0;31mFAIL\033[0m] #{text}\n"
-    puts
-    exit 1
-  end
+install_nix() {
+  if command -v nix > /dev/null 2>&1; then
+    success "Nix already installed"
+    return
+  fi
+  info "Installing Nix (Determinate Systems)..."
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+  # Source nix into the current shell so subsequent steps can use it
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh 2>/dev/null || true
+  success "Nix installed"
+}
 
-  def run_bash(file)
-    run_command('/usr/bin/env', 'bash', file)
-  end
-
-  def run_command(*command)
-    IO.popen(command + [:err=>[:child, :out]]) do |io|
-      io.each { |line| info line }
-    end
-  end
-end
-
-class DotfileInstall
-  include InstallUtils
-
-  def get_mode(file)
-    File.exist?(file) or return :link
-    @global_mode and return @global_mode
-
-    selection = ''
-    while !%w(s S o O b B a).include?(selection)
-      user "File already exists: #{file}. What do you want to do?\n[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all, [a]bort?"
-      selection = STDIN.getch
-    end
-    case selection
-    when ?s then :skip
-    when ?S then @global_mode = :skip
-    when ?o then :overwrite
-    when ?O then @global_mode = :overwrite
-    when ?b then :backup
-    when ?B then @global_mode = :backup
-    when ?a then exit 1
-    end
-  end
-
-  def link_file(target, link)
-    puts "#{target} -> #{link.inspect}"
-    case get_mode(link)
-    when :skip
-      success "Skipped #{link}"
-      return
-    when :backup
-      FileUtils.mv link, "#{link}.backup"
-      success "Backed up #{link} to #{link}.backup"
-    when :overwrite
-      FileUtils.rm link
-      success "removed #{link}"
-    end
-    FileUtils.ln_s File.expand_path(target), link
-    success "Linked #{target} to #{link}"
-  end
-
-  def run
-    Dir['**/*.symlink'].each do |dotfile|
-      link = '.' << dotfile.gsub(/^[^\/]*\//, '').gsub('secret.', '').gsub('.symlink', '')
-      FileUtils.mkdir_p File.join(ENV['HOME'], File.dirname(link))
-      link_file dotfile, File.join(ENV['HOME'], link)
-    end
-  end
-
-  def self.run
-    new.run
-  end
-end
-
-class InstallActions
-  include InstallUtils
-
-  def check_secrets
-    secret_file = 'system/secret_status.secret.txt'
-    unless File.exist?(secret_file) && File.read(secret_file).strip == 'unlocked'
-      fail "Secrets appear locked. Run: git-crypt unlock /path/to/your-key"
-    end
+check_secrets() {
+  local secret_file="system/secret_status.secret.txt"
+  if [ -f "$secret_file" ] && [ "$(tr -d '[:space:]' < "$secret_file")" = "unlocked" ]; then
     success "Secrets unlocked"
-  end
+  else
+    fail "Secrets appear locked. Run: git-crypt unlock /path/to/your-key"
+  fi
+}
 
-  def hostname
-    `scutil --get LocalHostName`.strip
-  end
+link_file() {
+  local target="$1" link="$2" action=""
 
-  def apply_darwin
-    dotfiles = File.expand_path('~/.dotfiles')
-    flake    = "#{dotfiles}/nix"  # absolute path avoids ~ expansion issues under sudo
-    target   = "#{flake}##{hostname}"
-    if system('which darwin-rebuild > /dev/null 2>&1')
-      info "Applying nix-darwin for #{hostname}..."
-      run_command 'sudo', 'darwin-rebuild', 'switch', '--flake', target
-    else
-      info "Installing nix-darwin for #{hostname} (first run)..."
-      Dir.chdir(flake) do
-        run_command 'sudo', 'nix', 'run', 'nix-darwin', '--', 'switch', '--flake', ".##{hostname}"
-      end
-    end
-    success "nix-darwin applied"
-  end
+  if [ -L "$link" ] && [ "$(readlink "$link")" = "$target" ]; then
+    success "Already linked: $link"
+    return
+  fi
 
-  def run
-    check_secrets
-    DotfileInstall.run
-    apply_darwin
-    success "Bootstrap complete"
-  end
+  if [ -e "$link" ] || [ -L "$link" ]; then
+    action="${GLOBAL_MODE:-}"
+    if [ -z "$action" ]; then
+      printf "  File exists: %s\n  [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all? " "$link"
+      read -r -n 1 action </dev/tty
+      echo
+    fi
+    case "$action" in
+      S) GLOBAL_MODE=s; action=s ;;
+      O) GLOBAL_MODE=o; action=o ;;
+      B) GLOBAL_MODE=b; action=b ;;
+    esac
+    case "$action" in
+      s) success "Skipped $link"; return ;;
+      o) rm -f "$link" ;;
+      b) mv "$link" "${link}.backup"; success "Backed up to ${link}.backup" ;;
+    esac
+  fi
 
-  def self.run ; new.run ;end
-end
+  ln -s "$target" "$link"
+  success "Linked $target → $link"
+}
 
-InstallActions.run
+create_symlinks() {
+  while IFS= read -r dotfile; do
+    dotfile="${dotfile#./}"
+    local link="${dotfile#*/}"   # strip topic dir prefix
+    link="${link//secret./}"     # strip secret.
+    link="${link%.symlink}"      # strip .symlink suffix
+    link=".$link"                # prepend dot
+    mkdir -p "$HOME/$(dirname "$link")"
+    link_file "$DOTFILES/$dotfile" "$HOME/$link"
+  done < <(find . -name "*.symlink" | sort)
+}
+
+apply_darwin() {
+  local hostname flake
+  hostname="$(scutil --get LocalHostName)"
+  flake="$DOTFILES/nix"
+
+  if command -v darwin-rebuild > /dev/null 2>&1; then
+    info "Applying nix-darwin for $hostname..."
+    sudo darwin-rebuild switch --flake "$flake#$hostname"
+  else
+    info "Installing nix-darwin for $hostname (first run)..."
+    (cd "$flake" && sudo nix run nix-darwin -- switch --flake ".#$hostname")
+  fi
+  success "nix-darwin applied"
+}
+
+install_nix
+check_secrets
+create_symlinks
+apply_darwin
+success "Bootstrap complete"
