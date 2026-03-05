@@ -34,7 +34,7 @@
         "GUT-201" = mkDarwin "aarch64-darwin" [
           ./profiles/work.nix
         ];
-        "khara" = mkDarwin "aarch64-darwin" [
+        "Khara" = mkDarwin "aarch64-darwin" [
           ./profiles/personal.nix
           ./hosts/khara.nix
         ];
