@@ -14,8 +14,10 @@ success() { printf "  [ \033[00;32mOK\033[0m ] %s\n" "$*"; }
 fail()    { printf "  [\033[0;31mFAIL\033[0m] %s\n" "$*" >&2; exit 1; }
 
 install_nix() {
-  if command -v nix > /dev/null 2>&1; then
+  if command -v nix > /dev/null 2>&1 || [ -f /nix/receipt.json ]; then
     success "Nix already installed"
+    # Ensure nix is on PATH for subsequent steps even if the shell hasn't sourced it
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh 2>/dev/null || true
     return
   fi
   info "Installing Nix (Determinate Systems)..."
