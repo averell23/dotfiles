@@ -82,6 +82,15 @@ apply_darwin() {
   hostname="$(scutil --get LocalHostName)"
   flake="$DOTFILES/nix"
 
+  # Check that this hostname has an entry in the flake before attempting to apply.
+  if ! grep -qF "\"$hostname\"" "$flake/flake.nix"; then
+    printf "\n  [ \033[00;33m!!\033[0m ] No nix-darwin config for '%s'.\n" "$hostname"
+    printf "         Add an entry to nix/flake.nix:\n\n"
+    printf "           \"%s\" = mkDarwin \"aarch64-darwin\" [ ./profiles/personal.nix ];\n\n" "$hostname"
+    printf "         Then re-run: script/bootstrap\n\n"
+    return
+  fi
+
   if command -v darwin-rebuild > /dev/null 2>&1; then
     info "Applying nix-darwin for $hostname..."
     sudo darwin-rebuild switch --flake "$flake#$hostname"
