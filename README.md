@@ -65,8 +65,8 @@ nix/
 **Profiles** are composable modules. Each machine in `flake.nix` lists whichever profiles apply to it — Homebrew cask lists and Home Manager packages from all selected profiles are merged automatically:
 
 ```nix
-"gut-201" = mkDarwin "aarch64-darwin" [ ./profiles/work.nix ./profiles/personal.nix ];
-"khara"   = mkDarwin "aarch64-darwin" [ ./hosts/khara.nix ];
+"GUT-201" = mkDarwin "aarch64-darwin" [ ./profiles/work.nix ];
+"Khara"   = mkDarwin "aarch64-darwin" [ ./profiles/personal.nix ./hosts/khara.nix ];
 ```
 
 `profiles/defaults.nix` is always included by `mkDarwin` and never needs to be listed explicitly.
@@ -109,22 +109,14 @@ Files ending in `.secret.*` are encrypted with git-crypt and require unlocking b
 
 ## New machine setup
 
-### 1. Install Nix (Determinate Systems)
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```
-
-Installs Nix with flakes enabled and a clean uninstaller. Restart your shell afterwards.
-
-### 2. Clone the repo
+### 1. Clone the repo
 
 ```bash
 git clone <your-repo-url> ~/.dotfiles
 cd ~/.dotfiles
 ```
 
-### 3. Install Homebrew
+### 2. Install Homebrew
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -132,7 +124,7 @@ cd ~/.dotfiles
 
 nix-darwin manages the Homebrew package list declaratively, but Homebrew itself must be installed first.
 
-### 4. Decrypt secrets
+### 3. Decrypt secrets
 
 ```bash
 git-crypt unlock /path/to/your-key
@@ -140,29 +132,36 @@ git-crypt unlock /path/to/your-key
 
 Required before bootstrapping — SSH config, GPG keys, Zed settings, and API tokens are encrypted.
 
+### 4. Add the machine to flake.nix
+
+Edit `nix/flake.nix` and add an entry under `darwinConfigurations`. The key must exactly match the output of `scutil --get LocalHostName`:
+
+```bash
+scutil --get LocalHostName   # e.g. "MyMachine"
+```
+
+```nix
+"MyMachine" = mkDarwin "aarch64-darwin" [ ./profiles/work.nix ];
+```
+
+Commit the change so the bootstrap script can find it.
+
+> If you skip this step, `script/bootstrap` will print a reminder with the exact snippet to add and finish without applying nix-darwin. You can then add the entry and re-run.
+
 ### 5. Run the bootstrap script
 
 ```bash
 script/bootstrap
 ```
 
-Creates the `*.symlink` symlinks in `$HOME` and then applies nix-darwin for the first time. On the first run, `darwin-rebuild` isn't installed yet, so it bootstraps via:
+This will:
+1. Install Nix automatically if not already present (Determinate Systems installer)
+2. Create all `*.symlink` symlinks in `$HOME`
+3. Apply nix-darwin for the first time via `nix run nix-darwin`
 
-```bash
-sudo nix run nix-darwin -- switch --flake /Users/daniel/.dotfiles/nix#$(scutil --get LocalHostName)
-```
+The first run installs all packages, applies macOS defaults, installs Homebrew casks, and activates Home Manager.
 
-This installs all packages, applies macOS defaults, installs Homebrew casks, and activates Home Manager.
-
-### 6. Add the new machine to flake.nix
-
-Edit `nix/flake.nix` and add an entry under `darwinConfigurations` with the hostname and whichever profiles apply:
-
-```nix
-"MyMachine" = mkDarwin "aarch64-darwin" [ ./profiles/work.nix ./profiles/personal.nix ];
-```
-
-### 7. Set login shell
+### 6. Set login shell
 
 ```bash
 chsh -s /bin/zsh
