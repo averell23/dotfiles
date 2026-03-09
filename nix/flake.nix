@@ -23,9 +23,10 @@
             ./profiles/defaults.nix
             home-manager.darwinModules.home-manager
             {
-              home-manager.useGlobalPkgs   = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.daniel    = import ./home.nix;
+              home-manager.useGlobalPkgs        = true;
+              home-manager.useUserPackages      = true;
+              home-manager.backupFileExtension  = "backup";
+              home-manager.users.daniel         = import ./home.nix;
             }
           ] ++ profiles;
         };
