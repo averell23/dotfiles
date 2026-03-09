@@ -6,9 +6,12 @@
     "cyberduck"    # file transfer
     "exactscan"
     "gramps"
+    "handbrake-app"
     "signal"
+    "slack"
     "teamviewer"
     "telegram"
+    "threema@beta"
     "grandperspective" # disk usage
     "vlc"
     "whatsapp"

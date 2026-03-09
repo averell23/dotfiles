@@ -40,11 +40,13 @@
     ];
     casks = [
       "1password"
+      "1password-cli"
       "firefox"
       "fork"         # git client
       "google-chrome"
       "iterm2"
       "obsidian"
+      "tor-browser"
       "zed"
       "zotero"
     ];
