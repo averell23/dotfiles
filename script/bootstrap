@@ -67,6 +67,17 @@ link_file() {
   success "Linked $target → $link"
 }
 
+remove_stale_symlinks() {
+  local link target
+  while IFS= read -r link; do
+    target="$(readlink "$link")"
+    if [[ "$target" == "$DOTFILES"* ]]; then
+      rm "$link"
+      success "Removed stale symlink: $link → $target"
+    fi
+  done < <(find "$HOME" -maxdepth 4 -type l ! -exec test -e {} \; -print 2>/dev/null)
+}
+
 create_symlinks() {
   while IFS= read -r dotfile; do
     dotfile="${dotfile#./}"
@@ -105,6 +116,7 @@ apply_darwin() {
 
 install_nix
 check_secrets
+remove_stale_symlinks
 create_symlinks
 apply_darwin
 success "Bootstrap complete"
