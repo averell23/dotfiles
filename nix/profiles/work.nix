@@ -6,6 +6,7 @@
     "google-drive"
     "claude"
     "claude-code"
+    "copilot-cli"
     "gcloud-cli"
     "postman"      # API testing
     "sequel-ace"   # database client
