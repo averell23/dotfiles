@@ -1,5 +1,9 @@
 # Personal profile: tools and casks for personal use
-{ ... }: {
+{ pkgs, ... }: {
+  home-manager.users.daniel.home.packages = with pkgs; [
+    # Personal CLI tools
+    deno
+  ];
   homebrew.casks = [
     "balenaetcher"
     "claude"
