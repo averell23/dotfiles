@@ -21,9 +21,11 @@
     discount  # Markdown-to-HTML CLI, provides `markdown` command (was: Homebrew markdown)
     mas       # Mac App Store CLI (was: Homebrew mas)
     powerline-fonts
+    ffmpeg
     git
     git-crypt
     gnupg
+    htop
     imagemagick
     k6
     readline
