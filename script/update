@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# Update nix flake inputs to their latest versions and rebuild the system.
+# Safe to run at any time.
+
+set -euo pipefail
+
+DOTFILES="$(cd "$(dirname "$0")"/.. && pwd)"
+FLAKE="$DOTFILES/nix"
+
+info()    { printf "  [ \033[00;34m..\033[0m ] %s\n" "$*"; }
+success() { printf "  [ \033[00;32mOK\033[0m ] %s\n" "$*"; }
+fail()    { printf "  [\033[0;31mFAIL\033[0m] %s\n" "$*" >&2; exit 1; }
+
+HOSTNAME="$(scutil --get LocalHostName)"
+
+# Ensure we have nix available
+if ! command -v nix > /dev/null 2>&1; then
+  fail "Nix is not installed. Run script/bootstrap first."
+fi
+
+# Ensure darwin-rebuild is available
+if ! command -v darwin-rebuild > /dev/null 2>&1; then
+  fail "darwin-rebuild is not installed. Run script/bootstrap first."
+fi
+
+# Ensure this hostname has a config in the flake
+if ! grep -qF "\"$HOSTNAME\"" "$FLAKE/flake.nix"; then
+  fail "No nix-darwin config found for '$HOSTNAME' in nix/flake.nix. Add one and re-run."
+fi
+
+info "Updating nix flake inputs..."
+(cd "$FLAKE" && nix flake update)
+success "flake.lock updated"
+
+info "Rebuilding system for $HOSTNAME..."
+sudo darwin-rebuild switch --flake "$FLAKE#$HOSTNAME"
+success "darwin-rebuild complete"
+
+info "Committing updated flake.lock..."
+cd "$DOTFILES"
+if git diff --quiet nix/flake.lock; then
+  success "flake.lock unchanged — nothing to commit"
+else
+  git add nix/flake.lock
+  git commit -m "Update nix flake inputs"
+  success "flake.lock committed"
+fi
+
+success "Update complete"
