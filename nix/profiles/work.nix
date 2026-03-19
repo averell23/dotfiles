@@ -1,5 +1,9 @@
 # Work profile: tools and casks for work machines
-{ ... }: {
+{ pkgs, ... }: {
+  home-manager.users.daniel.home.packages = with pkgs; [
+    # Personal CLI tools
+    k9s
+  ];
   homebrew.casks = [
     "dash"         # documentation browser
     "docker-desktop"
