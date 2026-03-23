@@ -41,6 +41,7 @@
     casks = [
       "1password"
       "1password-cli"
+      "copilot-cli"
       "firefox"
       "fork"         # git client
       "google-chrome"
