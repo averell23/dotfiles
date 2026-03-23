@@ -11,6 +11,7 @@
     "exactscan"
     "gramps"
     "handbrake-app"
+    "libreoffice"
     "signal"
     "slack"
     "teamviewer"
