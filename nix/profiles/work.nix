@@ -12,6 +12,7 @@
     "claude-code"
     "copilot-cli"
     "gcloud-cli"
+    "lm-studio"
     "postman"      # API testing
     "sequel-ace"   # database client
     "signal"
