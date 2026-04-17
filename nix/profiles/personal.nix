@@ -8,6 +8,7 @@
     "balenaetcher"
     "claude"
     "cyberduck"    # file transfer
+    "cryptomator"
     "exactscan"
     "gramps"
     "handbrake-app"
