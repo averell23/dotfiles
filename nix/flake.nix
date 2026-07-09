@@ -32,7 +32,7 @@
         };
     in {
       darwinConfigurations = {
-        "GUT-201" = mkDarwin "aarch64-darwin" [
+        "gut-261" = mkDarwin "aarch64-darwin" [
           ./profiles/work.nix
         ];
         "Khara" = mkDarwin "aarch64-darwin" [
