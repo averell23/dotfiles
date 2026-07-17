@@ -21,8 +21,6 @@ disabled_tools = []
 agent_paths = []
 enabled_agents = []
 disabled_agents = []
-
-# Project-specific skill paths
 skill_paths = [
     "./.claude",
     "./.claude/skills",
@@ -30,6 +28,9 @@ skill_paths = [
 ]
 enabled_skills = []
 disabled_skills = []
+applied_migrations = [
+    "bash_read_only_defaults_v1",
+]
 
 [[providers]]
 name = "mistral"
@@ -62,6 +63,7 @@ temperature = 1.0
 input_price = 1.5
 output_price = 7.5
 thinking = "high"
+supports_images = true
 
 [[models]]
 name = "devstral-small-latest"
@@ -107,32 +109,50 @@ permission = "ask"
 allowlist = []
 denylist = []
 
-[tools.search_replace]
-permission = "ask"
-allowlist = []
-denylist = []
-max_content_size = 100000
-create_backup = false
-fuzzy_threshold = 0.9
-
 [tools.bash]
 permission = "ask"
 allowlist = [
     "/Users/daniel/.vibe/*",
+    "basename",
     "cat",
+    "comm",
+    "cut",
+    "date",
+    "diff",
+    "dirname",
+    "du",
     "echo",
     "file",
     "find",
+    "fmt",
+    "fold",
     "git diff",
     "git log",
     "git status",
+    "grep",
     "head",
+    "join",
+    "less",
     "ls",
+    "md5sum",
+    "more",
+    "nl",
+    "od",
+    "paste",
     "pwd",
+    "readlink",
+    "sha1sum",
+    "sha256sum",
+    "shasum",
+    "sort",
     "stat",
+    "sum",
+    "tac",
     "tail",
+    "tr",
     "tree",
     "uname",
+    "uniq",
     "wc",
     "which",
     "whoami",
@@ -227,3 +247,9 @@ allowlist = []
 denylist = []
 max_write_bytes = 64000
 create_parent_dirs = true
+
+[tools.edit]
+permission = "ask"
+allowlist = []
+denylist = []
+fuzzy_threshold = 0.9

@@ -2,6 +2,8 @@
   # Set once, do not change after initial install
   system.stateVersion = 5;
 
+  nixpkgs.config.allowUnfree = true;
+
   # nix-darwin needs to know the user so home-manager can derive homeDirectory
   users.users.daniel.home = "/Users/daniel";
 
