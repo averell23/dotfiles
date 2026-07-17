@@ -17,26 +17,27 @@
   # CLI packages (migrated from Brewfile)
   # GUI apps (casks) remain in Homebrew for now
   home.packages = with pkgs; [
-    links2    # text-mode web browser (was: Homebrew links)
     discount  # Markdown-to-HTML CLI, provides `markdown` command (was: Homebrew markdown)
-    mas       # Mac App Store CLI (was: Homebrew mas)
-    powerline-fonts
     ffmpeg
+    file        # provides libmagic / the `file` command
     git
     git-crypt
     gnupg
     htop
     imagemagick
+    imagemagick
+    inetutils   # provides telnet
     k6
+    links2    # text-mode web browser (was: Homebrew links)
+    mas       # Mac App Store CLI (was: Homebrew mas)
+    powerline-fonts
+    pv
     readline
+    silver-searcher-ng
     sqlite
     tmux
-    wget
     watch
-    pv
-    imagemagick
-    file        # provides libmagic / the `file` command
-    inetutils   # provides telnet
+    wget
     yt-dlp
   ];
 
