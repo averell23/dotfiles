@@ -129,8 +129,10 @@ in
       export PATH="''${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
       # OpenSSL build flags for native gem / extension compilation
-      export LDFLAGS="-L$HOMEBREW_HOME/opt/openssl/lib"
-      export CPPFLAGS="-I$HOMEBREW_HOME/opt/openssl/include"
+      if [ -d "$HOMEBREW_HOME/opt/openssl/lib" ]; then
+        export LDFLAGS="-L$HOMEBREW_HOME/opt/openssl/lib"
+        export CPPFLAGS="-I$HOMEBREW_HOME/opt/openssl/include"
+      fi
 
       # Additional tool paths
       export PATH="$PATH:$HOME/.local/bin"
