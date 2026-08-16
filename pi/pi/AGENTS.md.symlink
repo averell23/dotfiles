@@ -1,0 +1,19 @@
+# General instructions for pi agents
+
+## General
+
+- Use the `date` command to check the current date and time. Do **not** use the web (e.g. /websearch).
+
+## Web access
+
+- The agent may access the web using the `/chrome` command, but only as a last resort. Before using `/chrome`, try in this order:
+  1. If a specific skill exists for the task, attempt to use that skill first.
+  2. Use `/websearch` to search for information on the web.
+  3. Use `curl` to fetch data from a specific URL if you know it.
+  4. Use `/chrome` to access the web if none of the above methods work.
+- If you do use `/chrome`, you must first ask the user to authorize it. If `/chrome` fails, ask the user to re-authorize it.
+
+## Creating skills
+
+- New project skills should be created in the `agents/skills` directory of the project. Do not create or symlink skills in `.pi/skills` if not specifically asked to do so.
+- New general skills should be created in the `$HOME/.ai/agents.symlink/skills` **only**. **Don't** use `$HOME/.pi` or `$HOME/.agents` for general skills.
