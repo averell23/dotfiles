@@ -8,7 +8,7 @@
 
 - The agent may access the web using the `/chrome` command, but only as a last resort. Before using `/chrome`, try in this order:
   1. If a specific skill exists for the task, attempt to use that skill first.
-  2. Use the `/context7` skill to look up documentation.
+  2. Use the `/context7-docs` command to look up documentation.
   3. Use `/websearch` to search for information on the web.
   4. Use `curl` to fetch data from a specific URL if you know it.
   5. Use `/chrome` to access the web if none of the above methods work.
