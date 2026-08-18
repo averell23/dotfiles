@@ -3,6 +3,7 @@
 ## General
 
 - Use the `date` command to check the current date and time. Do **not** use the web (e.g. /websearch).
+- Search for files: Prefer the `ag` tool (Silver Searcher) over `grep`.
 
 ## Web access
 
