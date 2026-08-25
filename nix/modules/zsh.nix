@@ -53,9 +53,11 @@ in
       # Shell
       reload = ". ~/.zshrc";
       cdd = "cd ~/Desktop";
-      cdt = "cd ~/Code/averell23/theurgananimals";
       pubkey = "more ~/.ssh/id_dsa.public | pbcopy | echo '=> Public key copied to pasteboard.'";
       upall = "git co -f db/schema.rb &> /dev/null ; git pp && script/update";
+
+      # AI tooling
+      nopi = "nono run --profile pi --allow-cwd -- pi"
 
       # System / navigation
       cdot = "cd ~/.dotfiles";
@@ -84,7 +86,6 @@ in
       pum = "puma -p 3666";
       cco = "complex_config";
       cdb = "cd $CODE_ROOT/betterplace/betterplace";
-      cdx = "cd $CODE_ROOT/betterplace/xform";
       cdk = "cd $CODE_ROOT/betterplace/betterplace-kubernetes-prd";
       cdm = "cd $CODE_ROOT/betterplace/me";
 
