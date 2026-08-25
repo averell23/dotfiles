@@ -84,10 +84,7 @@ in
       pum = "puma -p 3666";
       cco = "complex_config";
       cdb = "cd $HOME/Code/betterplace/betterplace";
-      cda = "cd $HOME/Code/betterplace/betterplace-provisioning";
-      cde = "cd $HOME/Code/betterplace/epo";
       cdx = "cd $HOME/Code/betterplace/xform";
-      cdc = "cd $HOME/Code/betterplace/coupons";
       cdk = "cd $HOME/Code/betterplace/betterplace-kubernetes-prd";
       cdm = "cd $HOME/Code/betterplace/me";
 
