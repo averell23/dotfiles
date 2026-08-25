@@ -26,7 +26,9 @@
     onActivation = {
       autoUpdate = false;
       upgrade    = false;
-      cleanup    = "uninstall"; # remove formulae/casks no longer listed
+      # Do not remove Homebrew packages that are not declared here: projects may
+      # install their own Homebrew dependencies outside the dotfiles baseline.
+      cleanup    = "none";
     };
     taps  = [];
     brews = [
