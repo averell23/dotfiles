@@ -41,6 +41,7 @@
       # where ruby-build can find them.
       "gmp"
       "libyaml"
+      "nono"
     ];
     casks = [
       "1password"
