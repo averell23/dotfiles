@@ -83,10 +83,10 @@ in
       br = "bundle exec rails";
       pum = "puma -p 3666";
       cco = "complex_config";
-      cdb = "cd $HOME/Code/betterplace/betterplace";
-      cdx = "cd $HOME/Code/betterplace/xform";
-      cdk = "cd $HOME/Code/betterplace/betterplace-kubernetes-prd";
-      cdm = "cd $HOME/Code/betterplace/me";
+      cdb = "cd $CODE_ROOT/betterplace/betterplace";
+      cdx = "cd $CODE_ROOT/betterplace/xform";
+      cdk = "cd $CODE_ROOT/betterplace/betterplace-kubernetes-prd";
+      cdm = "cd $CODE_ROOT/betterplace/me";
 
       # Kubernetes
       kubs = "kubectl --kubeconfig=$HOME/.kube/betterplace-staging";
@@ -98,16 +98,39 @@ in
       serv = "script/server";
     };
 
+    setOptions = [
+      "complete_aliases"
+      "COMPLETE_IN_WORD"
+      "extended_glob"
+      "HIST_VERIFY"
+      "IGNORE_EOF"
+      "LOCAL_OPTIONS"
+      "LOCAL_TRAPS"
+      "NO_BG_NICE"
+      "NO_HUP"
+      "NO_LIST_BEEP"
+      "nobeep"
+      "PROMPT_SUBST"
+      "CORRECT"
+    ];
+
     sessionVariables = {
       DOTFILES = "$HOME/.dotfiles";
+      CODE_ROOT = "$HOME/Code";
       EDITOR = "vim";
       LSCOLORS = "exfxcxdxbxegedabagacad";
       CLICOLOR = "true";
       BASTION_USER = "daniel.hahn";
       DISPLAY = ":0";
-      GOPATH = "$HOME/Code/go";
+      GOPATH = "$CODE_ROOT/go";
       HOMEBREW_AUTO_UPDATE_SECS = "259200";
       GITHUB_ACCOUNT = "averell23";
+    };
+
+    siteFunctions = {
+      # cd helpers
+      cca = "cd $CODE_ROOT/averell23/$1";
+      ccb = "cd $CODE_ROOT/betterplace/$1";
     };
 
     # All initContent runs after oh-my-zsh in the generated .zshrc.
@@ -137,12 +160,7 @@ in
       export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
       # Shell options
-      setopt NO_BG_NICE NO_HUP NO_LIST_BEEP
-      setopt LOCAL_OPTIONS LOCAL_TRAPS
-      setopt HIST_VERIFY PROMPT_SUBST CORRECT
-      setopt COMPLETE_IN_WORD IGNORE_EOF
-      setopt complete_aliases
-      setopt extended_glob nobeep
+
 
       # Keybindings
       bindkey '^[^[[D' backward-word
@@ -177,12 +195,6 @@ in
 
       # iTerm2 shell integration
       test -e ~/.iterm2_shell_integration.zsh && source ~/.iterm2_shell_integration.zsh
-
-      # SSH helpers
-      bps() { ssh betterplace@bp-$1.betterops.de }
-      epo() { ssh betterplace@epo-$1.betterops.de }
-      dha-bps() { ssh daniel.hahn@bp-$1.betterops.de }
-      dha-epo() { ssh daniel.hahn@epo-$1.betterops.de }
 
       # Secrets (git-crypt encrypted)
       [[ -f $DOTFILES/system/tokens.secret.zsh ]] && source $DOTFILES/system/tokens.secret.zsh
