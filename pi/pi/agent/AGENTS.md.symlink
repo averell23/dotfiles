@@ -4,6 +4,7 @@
 
 - Use the `date` command to check the current date and time. Do **not** use the web (e.g. /websearch).
 - Search for files: Prefer the `ag` tool (Silver Searcher) over `grep`.
+- If a CONTEXT.md file exists in a directory, it provides context for the project in that directory. Use it to understand the project and its goals.
 
 ## Web access
 
