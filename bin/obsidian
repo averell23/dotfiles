@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# Wrapper for Obsidian CLI.
+#
+# The official Obsidian CLI binary is located inside the application bundle at
+# /Applications/Obsidian.app/Contents/MacOS/obsidian-cli.
+#
+# Note: Adding /Applications/Obsidian.app/Contents/MacOS directly to PATH causes
+# issues on macOS because APFS is case-insensitive, so running `obsidian` will
+# invoke the GUI binary `Obsidian` (which segfaults in CLI mode) instead of
+# `obsidian-cli`.
+
+if [ -x "/Applications/Obsidian.app/Contents/MacOS/obsidian-cli" ]; then
+  exec "/Applications/Obsidian.app/Contents/MacOS/obsidian-cli" "$@"
+elif [ -x "$HOME/Applications/Obsidian.app/Contents/MacOS/obsidian-cli" ]; then
+  exec "$HOME/Applications/Obsidian.app/Contents/MacOS/obsidian-cli" "$@"
+else
+  echo "Obsidian CLI not found. Make sure Obsidian is installed in /Applications/Obsidian.app." >&2
+  exit 1
+fi
