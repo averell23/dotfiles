@@ -1,0 +1,196 @@
+#!/usr/bin/env swift
+import Foundation
+import PDFKit
+import Vision
+import AppKit
+
+struct CLI {
+    static func printUsage() {
+        let usage = """
+Usage: read-pdf <command> <pdf-path> [options]
+
+Commands:
+  text <pdf> [--page <n|start-end>]     Extract text using native PDFKit (fast)
+  ocr  <pdf> [--page <n|start-end>]     Perform OCR using macOS Vision framework
+  render <pdf> [--page <n>] [--out <dir>] Render page(s) to PNG images for visual inspection
+  info <pdf>                            Display page count and document metadata
+
+Options:
+  --page, -p <range>    Single page (e.g. 1) or range (e.g. 1-5). 1-indexed. Default: all.
+  --out, -o <dir>       Output directory for rendered images. Default: /tmp
+  --dpi <dpi>           DPI for rendering (default: 150)
+"""
+        print(usage)
+    }
+
+    static func parsePageRange(_ rangeStr: String, maxPages: Int) -> [Int] {
+        if let single = Int(rangeStr) {
+            if single >= 1 && single <= maxPages {
+                return [single]
+            }
+            return []
+        }
+        let parts = rangeStr.split(separator: "-")
+        if parts.count == 2, let start = Int(parts[0]), let end = Int(parts[1]) {
+            let clampedStart = max(1, start)
+            let clampedEnd = min(maxPages, end)
+            if clampedStart <= clampedEnd {
+                return Array(clampedStart...clampedEnd)
+            }
+        }
+        return Array(1...maxPages)
+    }
+}
+
+let args = CommandLine.arguments
+
+guard args.count >= 3 else {
+    CLI.printUsage()
+    exit(args.count == 1 ? 0 : 1)
+}
+
+let command = args[1]
+let pdfPath = args[2]
+
+let fileURL = URL(fileURLWithPath: pdfPath)
+guard let doc = PDFDocument(url: fileURL) else {
+    fputs("Error: Failed to open PDF at '\(pdfPath)'\n", stderr)
+    exit(1)
+}
+
+var pageArg: String? = nil
+var outDir = "/tmp"
+var dpi: CGFloat = 150.0
+
+var i = 3
+while i < args.count {
+    switch args[i] {
+    case "--page", "-p":
+        if i + 1 < args.count {
+            pageArg = args[i + 1]
+            i += 1
+        }
+    case "--out", "-o":
+        if i + 1 < args.count {
+            outDir = args[i + 1]
+            i += 1
+        }
+    case "--dpi":
+        if i + 1 < args.count, let val = Double(args[i + 1]) {
+            dpi = CGFloat(val)
+            i += 1
+        }
+    default:
+        break
+    }
+    i += 1
+}
+
+let totalPages = doc.pageCount
+let targetPages: [Int]
+if let pageArg = pageArg {
+    targetPages = CLI.parsePageRange(pageArg, maxPages: totalPages)
+} else {
+    targetPages = Array(1...totalPages)
+}
+
+switch command {
+case "info":
+    print("File: \(fileURL.lastPathComponent)")
+    print("Pages: \(totalPages)")
+    if let attrs = doc.documentAttributes {
+        if let title = attrs[PDFDocumentAttribute.titleAttribute] { print("Title: \(title)") }
+        if let author = attrs[PDFDocumentAttribute.authorAttribute] { print("Author: \(author)") }
+        if let creator = attrs[PDFDocumentAttribute.creatorAttribute] { print("Creator: \(creator)") }
+        if let creationDate = attrs[PDFDocumentAttribute.creationDateAttribute] { print("Creation Date: \(creationDate)") }
+    }
+    if let firstPage = doc.page(at: 0) {
+        let bounds = firstPage.bounds(for: .mediaBox)
+        print("Page Size: \(Int(bounds.width)) x \(Int(bounds.height)) pt")
+    }
+
+case "text":
+    for p in targetPages {
+        guard let page = doc.page(at: p - 1) else { continue }
+        print("=== Page \(p)/\(totalPages) ===")
+        let text = page.string?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if text.isEmpty {
+            print("[No selectable text found on this page]")
+        } else {
+            print(text)
+        }
+        print("")
+    }
+
+case "ocr":
+    for p in targetPages {
+        guard let page = doc.page(at: p - 1) else { continue }
+        print("=== Page \(p)/\(totalPages) (OCR) ===")
+        let pageRect = page.bounds(for: .mediaBox)
+        let scale = dpi / 72.0
+        let size = NSSize(width: pageRect.width * scale, height: pageRect.height * scale)
+        let image = page.thumbnail(of: size, for: .mediaBox)
+
+        guard let tiffData = image.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: tiffData),
+              let cgImage = bitmap.cgImage else {
+            print("[Failed to render page for OCR]")
+            continue
+        }
+
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = .accurate
+        request.usesLanguageCorrection = true
+
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+        do {
+            try handler.perform([request])
+            if let results = request.results, !results.isEmpty {
+                for observation in results {
+                    if let candidate = observation.topCandidates(1).first {
+                        print(candidate.string)
+                    }
+                }
+            } else {
+                print("[No text recognized by OCR]")
+            }
+        } catch {
+            print("OCR Error: \(error.localizedDescription)")
+        }
+        print("")
+    }
+
+case "render":
+    let fileBase = fileURL.deletingPathExtension().lastPathComponent
+    let fm = FileManager.default
+    try? fm.createDirectory(atPath: outDir, withIntermediateDirectories: true, attributes: nil)
+
+    for p in targetPages {
+        guard let page = doc.page(at: p - 1) else { continue }
+        let pageRect = page.bounds(for: .mediaBox)
+        let scale = dpi / 72.0
+        let size = NSSize(width: pageRect.width * scale, height: pageRect.height * scale)
+        let image = page.thumbnail(of: size, for: .mediaBox)
+
+        guard let tiffData = image.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: tiffData),
+              let pngData = bitmap.representation(using: .png, properties: [:]) else {
+            fputs("Failed to generate image for page \(p)\n", stderr)
+            continue
+        }
+
+        let outPath = "\(outDir)/\(fileBase)_page_\(p).png"
+        let outUrl = URL(fileURLWithPath: outPath)
+        do {
+            try pngData.write(to: outUrl)
+            print("Rendered: \(outPath)")
+        } catch {
+            fputs("Failed to write \(outPath): \(error.localizedDescription)\n", stderr)
+        }
+    }
+
+default:
+    fputs("Unknown command: '\(command)'\n", stderr)
+    CLI.printUsage()
+    exit(1)
+}
