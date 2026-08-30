@@ -175,6 +175,10 @@ in
       fpath=($DOTFILES/zsh/functions $fpath)
       autoload -Uz $DOTFILES/zsh/functions/*(.:t)
 
+      # Initialize completion system
+      autoload -Uz compinit
+      compinit
+
       # GNU ls aliases (requires Homebrew coreutils)
       if command -v gls &>/dev/null; then
         alias ls="gls -F --color"

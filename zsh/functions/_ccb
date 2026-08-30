@@ -1,0 +1,2 @@
+#compdef ccb
+_files -W $CODE_ROOT/betterplace -/
