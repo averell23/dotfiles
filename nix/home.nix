@@ -30,7 +30,6 @@
     k6
     links2    # text-mode web browser (was: Homebrew links)
     mas       # Mac App Store CLI (was: Homebrew mas)
-    powerline-fonts
     pv
     readline
     silver-searcher-ng
