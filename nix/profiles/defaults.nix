@@ -48,6 +48,7 @@
       "1password-cli"
       "copilot-cli"
       "firefox"
+      "font-jetbrains-mono-nerd-font"
       "fork"         # git client
       "google-chrome"
       "iterm2"
