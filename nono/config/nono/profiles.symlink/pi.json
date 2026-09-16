@@ -8,7 +8,6 @@
     "description": "Runtime-discovered path additions for pi",
     "author": "Daniel Hahn"
   },
-  "binary": "pi",
   "security": {
     "signal_mode": null,
     "process_info_mode": null,
