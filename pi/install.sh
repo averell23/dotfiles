@@ -12,6 +12,8 @@ packages=(
   "npm:pi-open-tui"
   "npm:pi-acp"
   "npm:pi-matt-pocock-skills"
+  "npm:pi-claude-bridge"
+  "npm:pi-subagents"
 )
 
 for package in "${packages[@]}"; do
