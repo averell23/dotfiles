@@ -15,3 +15,4 @@ Brewfile.lock.json
 .claude/
 result
 nix/result
+ai/agents.symlink/skills/synced

@@ -32,6 +32,7 @@
     ],
     "read": [
       "~/.asdf/",
+      "~/.tool-versions",
       "~/node_modules"
     ],
     "write": [],
