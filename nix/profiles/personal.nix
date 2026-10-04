@@ -9,14 +9,17 @@
     "claude"
     "cyberduck"    # file transfer
     "cryptomator"
+    "eddie"
     "exactscan"
     "gramps"
     "handbrake-app"
     "libreoffice"
+    "nextcloud"
     "signal"
     "slack"
     "teamviewer"
     "telegram"
+    "tunnelblick"
     "threema@beta"
     "grandperspective" # disk usage
     "vlc"
