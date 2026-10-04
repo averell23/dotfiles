@@ -8,7 +8,6 @@ packages=(
   "npm:pi-chrome"
   "/Users/daniel/.config/nono/packages/nolabs-ai/pi"
   "npm:context-mode"
-  "npm:pi-mcp-adapter"
   "npm:pi-open-tui"
   "npm:pi-acp"
   "npm:pi-matt-pocock-skills"
