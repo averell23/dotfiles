@@ -57,7 +57,8 @@ in
       upall = "git co -f db/schema.rb &> /dev/null ; git pp && script/update";
 
       # AI tooling
-      nopi = "nono run --profile pi -- pi";
+      nopi  = "nono run --profile pi -- pi";
+      nopic = "nono run --profile pi-claude -- pi";
 
       # System / navigation
       cdot = "cd ~/.dotfiles";
