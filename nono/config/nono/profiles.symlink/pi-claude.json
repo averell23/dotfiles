@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "pi"
+  ],
+  "meta": {
+    "name": "pi-claude",
+    "version": "1.0.0",
+    "description": "pi profile with Claude Code access, for use with the claude-bridge",
+    "author": "Daniel Hahn"
+  },
+  "groups": {
+    "include": [
+      { "name": "claude_code_macos", "when": "macos" }
+    ],
+    "exclude": []
+  },
+  "filesystem": {
+    "allow": [
+      "~/.claude",
+      "~/.claude.lock"
+    ],
+    "allow_file": [
+      "~/.claude.json",
+      "~/Library/Keychains/login.keychain-db"
+    ],
+    "bypass_protection": [
+      "~/Library/Keychains/login.keychain-db"
+    ]
+  }
+}
