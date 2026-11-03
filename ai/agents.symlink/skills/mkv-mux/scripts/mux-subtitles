@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+import os
+import sys
+import subprocess
+import argparse
+from pathlib import Path
+
+VIDEO_EXTENSIONS = {'.mp4', '.mkv', '.avi', '.mov', '.m4v', '.wmv'}
+SUB_EXTENSIONS = {'.srt', '.ass', '.ssa', '.sub', '.vtt'}
+
+def find_files(directory):
+    path = Path(directory)
+    videos = []
+    subtitles = []
+    
+    for root, _, files in os.walk(path):
+        for file in files:
+            p = Path(root) / file
+            ext = p.suffix.lower()
+            if ext in VIDEO_EXTENSIONS:
+                videos.append(p)
+            elif ext in SUB_EXTENSIONS:
+                subtitles.append(p)
+                
+    return videos, subtitles
+
+def guess_language(sub_path):
+    name = sub_path.stem.lower()
+    parts = name.split('.')
+    lang_map = {
+        'en': 'eng', 'eng': 'eng', 'english': 'eng',
+        'es': 'spa', 'spa': 'spa', 'spanish': 'spa',
+        'fr': 'fre', 'fre': 'fre', 'french': 'fre',
+        'de': 'ger', 'ger': 'ger', 'german': 'ger',
+        'it': 'ita', 'ita': 'ita', 'italian': 'ita',
+        'ja': 'jpn', 'jpn': 'jpn', 'japanese': 'jpn',
+        'zh': 'chi', 'chi': 'chi', 'chinese': 'chi',
+        'pt': 'por', 'por': 'por', 'portuguese': 'por',
+        'ru': 'rus', 'rus': 'rus', 'russian': 'rus',
+    }
+    for part in reversed(parts):
+        if part in lang_map:
+            return lang_map[part]
+    return 'eng'
+
+def main():
+    parser = argparse.ArgumentParser(description="Mux video and all recursive subtitle files into an MKV container without re-encoding.")
+    parser.add_argument("dir", nargs="?", default=".", help="Directory to search for video and subtitles")
+    parser.add_argument("--output", "-o", help="Custom output MKV file path")
+    args = parser.parse_args()
+
+    videos, subtitles = find_files(args.dir)
+    
+    if not videos:
+        print(f"Error: No video files found in {args.dir}", file=sys.stderr)
+        sys.exit(1)
+        
+    video = max(videos, key=lambda p: p.stat().st_size)
+    print(f"Found video: {video}")
+    
+    print(f"Found {len(subtitles)} subtitle(s):")
+    for s in subtitles:
+        print(f"  - {s} (guessed lang: {guess_language(s)})")
+        
+    output_mkv = Path(args.output) if args.output else video.with_suffix('.mkv')
+    
+    cmd = ['ffmpeg', '-y', '-i', str(video)]
+    for sub in subtitles:
+        cmd.extend(['-i', str(sub)])
+        
+    cmd.extend(['-c', 'copy'])
+    cmd.extend(['-map', '0:v', '-map', '0:a'])
+    
+    for i, sub in enumerate(subtitles, start=1):
+        cmd.extend(['-map', f'{i}:0'])
+        lang = guess_language(sub)
+        cmd.extend([f'-metadata:s:s:{i-1}', f'language={lang}'])
+        
+    cmd.append(str(output_mkv))
+    
+    print(f"\nRunning command:\n{' '.join(cmd)}")
+    subprocess.run(cmd, check=True)
+    print(f"\nSuccessfully created: {output_mkv}")
+
+if __name__ == '__main__':
+    main()
