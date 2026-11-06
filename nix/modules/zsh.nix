@@ -101,7 +101,6 @@ in
     };
 
     setOptions = [
-      "complete_aliases"
       "COMPLETE_IN_WORD"
       "extended_glob"
       "HIST_VERIFY"
