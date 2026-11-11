@@ -34,6 +34,7 @@
     readline
     silver-searcher-ng
     sqlite
+    tea       # Gitea CLI client
     tmux
     watch
     wget
