@@ -30,8 +30,7 @@
   "filesystem": {
     "allow": [
       "~/.claude",
-      "~/.claude.lock",
-      "~/Library/Application Support/tea"
+      "~/.claude.lock"
     ],
     "read": [],
     "write": [],
