@@ -29,6 +29,7 @@
     "allow": [
       "~/.pi",
       "~/.context-mode",
+      "~/Library/Application Support/tea",
       "$WORKDIR"
     ],
     "read": [
