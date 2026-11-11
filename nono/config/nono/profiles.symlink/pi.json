@@ -28,11 +28,11 @@
   "filesystem": {
     "allow": [
       "~/.pi",
+      "~/.context-mode",
       "$WORKDIR"
     ],
     "read": [
       "~/.asdf/",
-      "~/.tool-versions",
       "~/node_modules"
     ],
     "write": [],
