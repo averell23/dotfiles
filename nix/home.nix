@@ -3,6 +3,7 @@
 {
   imports = [
     ./modules/git.nix
+    ./modules/npm-tools.nix
     ./modules/tmux.nix
     ./modules/vim.nix
     ./modules/zsh.nix

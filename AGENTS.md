@@ -52,6 +52,7 @@ nix/
 │   └── khara.nix          # machine-specific overrides (no profiles apply here)
 └── modules/
     ├── git.nix            # programs.git → ~/.config/git/config
+    ├── npm-tools.nix      # global npm tools pinned to a Nix Node.js
     ├── tmux.nix           # programs.tmux → ~/.config/tmux/tmux.conf
     ├── vim.nix            # programs.vim → ~/.vimrc
     └── zsh.nix            # programs.zsh → ~/.zshrc, ~/.zshenv
@@ -80,4 +81,5 @@ nix/
 | Zsh config, aliases, plugins | `modules/zsh.nix` → `~/.zshrc`, `~/.zshenv` |
 | Direnv + nix-direnv | `home.nix` → shell hook via `.zshrc` |
 | CLI packages | `home.nix` → `home.packages` |
+| Global npm tools (pi, pi-acp…) | `modules/npm-tools.nix` → `~/.local/share/npm-tools`, managed with `npm-tools` |
 | `.gemrc`, `.irbrc` | `home.nix` → `home.file` |

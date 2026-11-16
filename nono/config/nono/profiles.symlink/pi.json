@@ -34,7 +34,8 @@
     ],
     "read": [
       "~/.asdf/",
-      "~/node_modules"
+      "~/node_modules",
+      "~/.local/share/npm-tools"
     ],
     "write": [],
     "allow_file": [],
