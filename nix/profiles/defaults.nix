@@ -52,6 +52,7 @@
       "fork"         # git client
       "google-chrome"
       "iterm2"
+      "karabiner-elements"  # keyboard customiser; config in karabiner/
       "obsidian"
       "tor-browser"
       "zed"

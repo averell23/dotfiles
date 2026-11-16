@@ -16,3 +16,4 @@ Brewfile.lock.json
 result
 nix/result
 ai/agents.symlink/skills/synced
+karabiner/config/karabiner.symlink/automatic_backups/
