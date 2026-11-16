@@ -11,9 +11,15 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Agent skill sources (plain git repos, used by modules/pi.nix)
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, nix-darwin, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, nix-darwin, home-manager, ... }:
     let
       # profiles/defaults.nix is always included; pass additional profiles per machine.
       mkDarwin = system: profiles:
@@ -26,6 +32,7 @@
               home-manager.useGlobalPkgs        = true;
               home-manager.useUserPackages      = true;
               home-manager.backupFileExtension  = "backup";
+              home-manager.extraSpecialArgs     = { inherit inputs; };
               home-manager.users.daniel         = import ./home.nix;
             }
           ] ++ profiles;
