@@ -28,12 +28,12 @@
                     "identifiers": { "is_keyboard": true },
                     "simple_modifications": [
                         {
-                            "from": { "key_code": "left_option" },
-                            "to": [{ "key_code": "left_option" }]
-                        },
-                        {
                             "from": { "key_code": "left_command" },
                             "to": [{ "key_code": "left_command" }]
+                        },
+                        {
+                            "from": { "key_code": "left_option" },
+                            "to": [{ "key_code": "left_option" }]
                         }
                     ]
                 }
@@ -46,14 +46,46 @@
                     "to": [{ "key_code": "left_control" }]
                 },
                 {
-                    "from": { "key_code": "left_option" },
-                    "to": [{ "key_code": "left_command" }]
-                },
-                {
                     "from": { "key_code": "left_command" },
                     "to": [{ "key_code": "left_option" }]
+                },
+                {
+                    "from": { "key_code": "left_option" },
+                    "to": [{ "key_code": "left_command" }]
                 }
             ],
+
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Vim navigation: Home → gg, End → G (selected apps)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": { "key_code": "home" },
+                                "to": [{ "key_code": "g" }, { "key_code": "g" }],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": ["^dev\\.zed\\.Zed$", "^com\\.googlecode\\.iterm2$"]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": { "key_code": "end" },
+                                "to": [{ "key_code": "g", "modifiers": ["left_shift"] }],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": ["^dev\\.zed\\.Zed$", "^com\\.googlecode\\.iterm2$"]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
             "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
         }
     ]
