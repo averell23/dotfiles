@@ -53,6 +53,7 @@ nix/
 └── modules/
     ├── git.nix            # programs.git → ~/.config/git/config
     ├── npm-tools.nix      # global npm tools pinned to a Nix Node.js
+    ├── pi.nix             # pi packages + shared settings (npmCommand)
     ├── tmux.nix           # programs.tmux → ~/.config/tmux/tmux.conf
     ├── vim.nix            # programs.vim → ~/.vimrc
     └── zsh.nix            # programs.zsh → ~/.zshrc, ~/.zshenv
@@ -81,5 +82,6 @@ nix/
 | Zsh config, aliases, plugins | `modules/zsh.nix` → `~/.zshrc`, `~/.zshenv` |
 | Direnv + nix-direnv | `home.nix` → shell hook via `.zshrc` |
 | CLI packages | `home.nix` → `home.packages` |
+| pi packages, `npmCommand` | `modules/pi.nix` → merged into `~/.pi/agent/settings.json` (rest stays machine-local) |
 | Global npm tools (pi, pi-acp…) | `modules/npm-tools.nix` → `~/.local/share/npm-tools`, managed with `npm-tools` |
 | `.gemrc`, `.irbrc` | `home.nix` → `home.file` |

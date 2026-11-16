@@ -4,6 +4,7 @@
   imports = [
     ./modules/git.nix
     ./modules/npm-tools.nix
+    ./modules/pi.nix
     ./modules/tmux.nix
     ./modules/vim.nix
     ./modules/zsh.nix
