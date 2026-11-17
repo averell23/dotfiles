@@ -5,12 +5,16 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Swap left_command / left_option on external keyboards",
+                        "description": "Swap left_command / left_option on non-Apple keyboards",
                         "manipulators": [
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [{ "is_built_in_keyboard": true }],
+                                        "identifiers": [
+                                            { "is_built_in_keyboard": true },
+                                            { "vendor_id": 1452 },
+                                            { "vendor_id": 76 }
+                                        ],
                                         "type": "device_unless"
                                     }
                                 ],
@@ -24,7 +28,11 @@
                             {
                                 "conditions": [
                                     {
-                                        "identifiers": [{ "is_built_in_keyboard": true }],
+                                        "identifiers": [
+                                            { "is_built_in_keyboard": true },
+                                            { "vendor_id": 1452 },
+                                            { "vendor_id": 76 }
+                                        ],
                                         "type": "device_unless"
                                     }
                                 ],
