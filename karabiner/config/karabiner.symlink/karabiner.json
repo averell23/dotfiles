@@ -2,6 +2,84 @@
     "global": { "show_in_menu_bar": false },
     "profiles": [
         {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Swap left_command / left_option on external keyboards",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
+                                        "type": "device_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "left_command",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "left_option" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
+                                        "type": "device_unless"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "left_option",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "key_code": "left_command" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Vim navigation: Home → gg, End → G (selected apps)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^dev\\.zed\\.Zed$",
+                                            "^com\\.googlecode\\.iterm2$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": { "key_code": "home" },
+                                "to": [
+                                    { "key_code": "g" },
+                                    { "key_code": "g" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^dev\\.zed\\.Zed$",
+                                            "^com\\.googlecode\\.iterm2$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": { "key_code": "end" },
+                                "to": [
+                                    {
+                                        "key_code": "g",
+                                        "modifiers": ["left_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
             "devices": [
                 {
                     "identifiers": {
@@ -23,19 +101,6 @@
                             "to": [{ "key_code": "volume_increment" }]
                         }
                     ]
-                },
-                {
-                    "identifiers": { "is_keyboard": true },
-                    "simple_modifications": [
-                        {
-                            "from": { "key_code": "left_command" },
-                            "to": [{ "key_code": "left_command" }]
-                        },
-                        {
-                            "from": { "key_code": "left_option" },
-                            "to": [{ "key_code": "left_option" }]
-                        }
-                    ]
                 }
             ],
             "name": "Default profile",
@@ -44,48 +109,8 @@
                 {
                     "from": { "key_code": "caps_lock" },
                     "to": [{ "key_code": "left_control" }]
-                },
-                {
-                    "from": { "key_code": "left_command" },
-                    "to": [{ "key_code": "left_option" }]
-                },
-                {
-                    "from": { "key_code": "left_option" },
-                    "to": [{ "key_code": "left_command" }]
                 }
             ],
-
-            "complex_modifications": {
-                "rules": [
-                    {
-                        "description": "Vim navigation: Home → gg, End → G (selected apps)",
-                        "manipulators": [
-                            {
-                                "type": "basic",
-                                "from": { "key_code": "home" },
-                                "to": [{ "key_code": "g" }, { "key_code": "g" }],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_if",
-                                        "bundle_identifiers": ["^dev\\.zed\\.Zed$", "^com\\.googlecode\\.iterm2$"]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": { "key_code": "end" },
-                                "to": [{ "key_code": "g", "modifiers": ["left_shift"] }],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_if",
-                                        "bundle_identifiers": ["^dev\\.zed\\.Zed$", "^com\\.googlecode\\.iterm2$"]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
             "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
         }
     ]
