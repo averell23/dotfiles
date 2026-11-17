@@ -56,10 +56,6 @@ in
       pubkey = "more ~/.ssh/id_dsa.public | pbcopy | echo '=> Public key copied to pasteboard.'";
       upall = "git co -f db/schema.rb &> /dev/null ; git pp && script/update";
 
-      # AI tooling
-      nopi  = "nono run --profile pi -- pi";
-      nopic = "nono run --profile pi-claude -- pi";
-
       # System / navigation
       cdot = "cd ~/.dotfiles";
       cdn = "cd ~/Code/averell23/notizen";
@@ -132,6 +128,17 @@ in
       # cd helpers
       cca = "cd $CODE_ROOT/averell23/$1";
       ccb = "cd $CODE_ROOT/betterplace/$1";
+      nopi = ''
+          local profile=pi
+          # if $1 is given, and doesn't start with '-', treat it as
+          # a profile selector. ('-*' is assumed to be a flag for pi itself)
+          if [[ -n $1 && $1 != -* ]]; then
+            profile=pi-$1
+            shift
+          fi
+          nono run --profile "$profile" -- pi "$@"
+        '';
+     nopic = ''nopi claude "$@"'';
     };
 
     # All initContent runs after oh-my-zsh in the generated .zshrc.

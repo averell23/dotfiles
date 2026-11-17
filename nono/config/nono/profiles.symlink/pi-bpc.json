@@ -1,11 +1,11 @@
 {
   "extends": [
-    "pi"
+    "pi-c"
   ],
   "meta": {
-    "name": "pi-claude",
+    "name": "pi-bpc",
     "version": "1.0.0",
-    "description": "pi profile with Claude Code access, for use with the claude-bridge",
+    "description": "pi profile with Claude Code access, and access to the entire betterplace code directory",
     "author": "Daniel Hahn"
   },
   "security": {
@@ -18,9 +18,7 @@
     "wsl2_proxy_policy": null
   },
   "groups": {
-    "include": [
-      "claude_code_macos"
-    ],
+    "include": [],
     "exclude": []
   },
   "commands": {
@@ -29,16 +27,11 @@
   },
   "filesystem": {
     "allow": [
-      "~/.claude",
-      "~/.claude.lock"
+      "~/Code/betterplace"
     ],
     "read": [],
     "write": [],
-    "allow_file": [
-      "~/.claude.json",
-      "~/Library/Keychains/login.keychain-db",
-      "/bin/ps"
-    ],
+    "allow_file": [],
     "read_file": [],
     "write_file": [],
     "unix_socket": [],
@@ -47,10 +40,11 @@
     "unix_socket_dir_bind": [],
     "unix_socket_subtree": [],
     "unix_socket_subtree_bind": [],
-    "deny": [],
-    "bypass_protection": [
-      "~/Library/Keychains/login.keychain-db"
+    "deny": [
+      "~/Code/betterplace/**/.env",
+      "~/Code/betterplace/**/*secret*"
     ],
+    "bypass_protection": [],
     "suppress_save_prompt": []
   },
   "network": {
