@@ -138,7 +138,7 @@ in
           fi
           nono run --profile "$profile" -- pi "$@"
         '';
-     nopic = ''nopi claude "$@"'';
+     nopic = ''nopi c "$@"'';
     };
 
     # All initContent runs after oh-my-zsh in the generated .zshrc.
