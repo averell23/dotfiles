@@ -1,4 +1,4 @@
-{ ... }: {
+{ config, ... }: {
   # Set once, do not change after initial install
   system.stateVersion = 5;
 
@@ -134,19 +134,33 @@
     # AirDrop over every interface
     defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
 
-    # Safari developer settings
-    defaults write com.apple.Safari IncludeInternalDebugMenu                            -bool true
-    defaults write com.apple.Safari IncludeDevelopMenu                                  -bool true
-    defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey           -bool true
-    defaults write com.apple.Safari ShowFavoritesBar                                    -bool false
-    defaults write com.apple.Safari AutoFillFromAddressBook                             -bool false
-    defaults write com.apple.Safari AutoFillPasswords                                   -bool false
-    defaults write com.apple.Safari AutoFillCreditCardData                              -bool false
-    defaults write com.apple.Safari AutoFillMiscellaneousForms                         -bool false
-    defaults write com.apple.Safari AutoOpenSafeDownloads                              -bool false
-    defaults write com.apple.Safari WarnAboutFraudulentWebsites                        -bool true
-    defaults write com.apple.Safari SendDoNotTrackHTTPHeader                           -bool true
-    defaults write com.apple.Safari WebKitJavaEnabled                                  -bool false
+    # Safari settings. Safari is sandboxed (prefs live in its container), and
+    # activation runs as root, so write as the primary user. Requires Full Disk
+    # Access for the terminal running darwin-rebuild.
+    safari_failed=""
+    safari_default() {
+      if ! /usr/bin/sudo -u ${config.system.primaryUser} /usr/bin/defaults write com.apple.Safari "$@" 2>/dev/null; then
+        safari_failed="$safari_failed
+           defaults write com.apple.Safari $*"
+      fi
+    }
+    safari_default IncludeInternalDebugMenu                            -bool true
+    safari_default IncludeDevelopMenu                                  -bool true
+    safari_default WebKitDeveloperExtrasEnabledPreferenceKey           -bool true
+    safari_default ShowFavoritesBar                                    -bool false
+    safari_default AutoFillFromAddressBook                             -bool false
+    safari_default AutoFillPasswords                                   -bool false
+    safari_default AutoFillCreditCardData                              -bool false
+    safari_default AutoFillMiscellaneousForms                         -bool false
+    safari_default AutoOpenSafeDownloads                              -bool false
+    safari_default WarnAboutFraudulentWebsites                        -bool true
+    safari_default SendDoNotTrackHTTPHeader                           -bool true
+    safari_default WebKitJavaEnabled                                  -bool false
+    if [ -n "$safari_failed" ]; then
+      echo "warning: some Safari settings could not be written. Grant your terminal" >&2
+      echo "         Full Disk Access (System Settings > Privacy & Security), then run" >&2
+      echo "         as your user:$safari_failed" >&2
+    fi
 
     # Software update settings
     defaults write com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
