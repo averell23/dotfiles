@@ -1,0 +1,198 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "vim": {
+    "toggle_relative_line_numbers": false
+  },
+  "cli_default_open_behavior": "new_window",
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left",
+
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+  "disable_ai": false,
+  "agent_servers": {
+    "pi-acp": {
+      "default_config_options": {
+        "thought_level": "medium",
+        "model": "github-copilot/claude-opus-5.5"
+      },
+      "type": "registry"
+    },
+    "pi-nono": {
+      "favorite_config_option_values": {
+        "model": [
+          "lmstudio/Jiunsong/supergemma4-26b-uncensored-mlx-v2",
+          "github-copilot/gpt-5.6-luna",
+          "github-copilot/gpt-5.6-terra",
+          "github-copilot/claude-opus-5",
+          "github-copilot/claude-sonnet-5",
+          "github-copilot/gpt-5.6-sol",
+          "google-vertex/gemini-3.8-flash",
+          "google-vertex/gemini-3.5-flash-lite"
+        ]
+      },
+      "default_config_options": {
+        "model": "claude-bridge/claude-opus-5-5",
+        "mode": "auto",
+        "effort": "max"
+      },
+      "type": "custom",
+      "command": "nono",
+      "args": [
+        "run",
+        "--profile",
+        "pi",
+        "--allow-cwd",
+        "--",
+        "pi-acp",
+      ],
+      "env": {},
+    },
+    "pi-nono-all-bp-projects-claude": {
+      "favorite_config_option_values": {
+        "model": [
+          "lmstudio/Jiunsong/supergemma4-26b-uncensored-mlx-v2",
+          "github-copilot/gpt-5.6-luna",
+          "github-copilot/gpt-5.6-terra",
+          "github-copilot/claude-opus-5",
+          "github-copilot/claude-sonnet-5",
+          "github-copilot/gpt-5.6-sol",
+          "google-vertex/gemini-3.8-flash",
+          "google-vertex/gemini-3.5-flash-lite"
+        ]
+      },
+      "default_config_options": {
+        "model": "claude-bridge/claude-opus-5-5",
+        "mode": "auto",
+        "effort": "max"
+      },
+      "type": "custom",
+      "command": "nono",
+      "args": [
+        "run",
+        "--profile",
+        "pi-bpc",
+        "--allow-cwd",
+        "--",
+        "pi-acp",
+      ],
+      "env": {},
+    },
+    "pi-nono-claude": {
+      "favorite_config_option_values": {
+        "model": [
+            "claude-bridge/claude-opus-5-5",
+            "claude-bridge/claude-sonnet-5-5",
+            "claude-bridge/claude-haiku-5-5"
+        ]
+      },
+      "default_config_options": {
+        "model": "claude-bridge/claude-opus-5-5",
+        "mode": "auto",
+        "effort": "max"
+      },
+      "type": "custom",
+      "command": "nono",
+      "args": [
+        "run",
+        "--profile",
+        "pi-c",
+        "--allow-cwd",
+        "--",
+        "pi-acp",
+      ],
+      "env": {},
+    },
+    "claude-acp": {
+      "default_config_options": {
+        "model": "opus[1m]"
+      },
+      "type": "registry"
+    },
+    "github-copilot-cli": {
+      "type": "registry"
+    },
+    "github-copilot": {
+      "type": "registry"
+    },
+    "mistral-vibe": {
+      "type": "registry"
+    }
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "edit_predictions": {
+    "allow_data_collection": "no",
+    "codestral": {
+      "model": "",
+      "api_url": ""
+    },
+    "open_ai_compatible_api": {
+      "model": "google/gemma-3-1b",
+      "api_url": "http://localhost:1234/v1/completions"
+    },
+    "ollama": {
+      "model": "qwen2.5-coder:7b-base",
+      "api_url": ""
+    },
+    "provider": "open_ai_compatible_api",
+    "disabled_globs": [
+      "./env/**"
+    ]
+  },
+  "autosave": "on_focus_change",
+  "languages": {
+    "Ruby": {
+      "language_servers": ["!ruby-lsp", "rubocop", "solargraph"]
+    },
+    "Markdown": {
+      "soft_wrap": "editor_width"
+    },
+    "JSON": {
+      "soft_wrap": "editor_width"
+    },
+    "JavaScript": {
+      "soft_wrap": "editor_width"
+    }
+  },
+  "icon_theme": "Zed (Default)",
+  "agent": {
+    "dock": "right"
+  },
+  "vim_mode": true,
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "theme": {
+    "mode": "light",
+    "light": "macOS Classic Light",
+    "dark": "macOS Classic Dark"
+  },
+  "base_keymap": "TextMate",
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font",
+    "font_size": 13
+  },
+  "format_on_save": "off",
+  "file_scan_inclusions": [
+    ".env/*",
+    ".scratch/*",
+    "data/*"
+  ]
+}
