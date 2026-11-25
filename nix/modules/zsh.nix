@@ -216,4 +216,12 @@ in
       [[ -f ~/.profile ]] && source ~/.profile
     '';
   };
+
+  # Ensure ~/.localrc exists (empty, 0600) for local, untracked secrets.
+  # An existing file (or symlink) is left untouched.
+  home.activation.localrc = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -e "$HOME/.localrc" ] && [ ! -L "$HOME/.localrc" ]; then
+      run /usr/bin/install -m 600 /dev/null "$HOME/.localrc"
+    fi
+  '';
 }
