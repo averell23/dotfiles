@@ -27,7 +27,6 @@
     gnupg
     htop
     imagemagick
-    imagemagick
     inetutils   # provides telnet
     k6
     links2    # text-mode web browser (was: Homebrew links)
@@ -37,6 +36,7 @@
     silver-searcher-ng
     sqlite
     tea       # Gitea CLI client
+    (callPackage ./pkgs/things-cli.nix { })  # Things3 CLI; local package, the upstream Homebrew tap fails validation
     tmux
     watch
     wget
